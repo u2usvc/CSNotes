@@ -25,3 +25,9 @@
         - [git server](infra/services/git-srv.md)
     - [OS]()
         - [gentoo](infra/os/gentoo.md)
+
+---
+
+# WEB2
+- [SEC]()
+    - [Recon](web2/recon/utils.md)
