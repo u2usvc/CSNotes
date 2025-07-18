@@ -27,12 +27,18 @@
         - [git server](infra/services/git-srv.md)
     - [OS]()
         - [gentoo](infra/os/gentoo.md)
-- [DEV]()
-    - [CLI]()
-        - [git](infra/dev/cli/git.md)
-
 ---
 
 # WEB2
 - [SEC]()
     - [Recon](web2/recon/utils.md)
+
+---
+
+# DEV
+
+- [DEV]()
+    - [CLI]()
+        - [git](dev/dev/cli/git.md)
+        - [clangd](dev/dev/cli/clangd.md)
+
