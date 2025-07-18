@@ -27,6 +27,9 @@
         - [git server](infra/services/git-srv.md)
     - [OS]()
         - [gentoo](infra/os/gentoo.md)
+- [DEV]()
+    - [CLI]()
+        - [git](infra/dev/cli/git.md)
 
 ---
 
