@@ -9,6 +9,8 @@
 # EMBEDDED
 - [ADMIN]()
     - [UEFI](es/uefi.md)
+- [SEC]()
+    - [FW RE](es/fw_re.md)
 
 ---
 
