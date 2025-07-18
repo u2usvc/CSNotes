@@ -11,6 +11,7 @@ no-section-label = true
 default-theme = "dark"
 preferred-dark-theme = "coal"
 mathjax-support = true
+additional-css = ["custom.css"]
 
 [output.html.fold]
 enable = true
