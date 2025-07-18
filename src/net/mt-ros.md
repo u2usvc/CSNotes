@@ -206,3 +206,16 @@ Clients now can set an address on upstream interfaces (that're connected to your
 /routing/bfd/configuration/add interfaces=ether5,ether6,ether7,ether8 min-tx=1 min-rx=1
 # then in OSPF/BGP/whatever config set use-bfd=yes on an interface so that it will send BFD hello packets
 ```
+
+## DoH
+```bash
+# set the cloudflare server ("servers" is to resolve the DoH server itself, use-doh-server is a DoH server address)
+/ip/dns/set verify-doh-cert=yes allow-remote-requests=yes doh-max-concurent-queries=100 doh-max-server-connections=20 doh-timeout=6s servers=1.1.1.1,1.0.0.1 use-doh-server=https://cloudflare-dns.com/dns-query
+
+# fetch the downloaded cert chain
+/tool/fetch url=http://192.168.60.1:9595/one-one-one-chain.pem
+/file/print
+
+/certificate/import file-name=one-one-one-chain.pem
+# certificates-imported: 3
+```
