@@ -6,4 +6,7 @@
 
 ---
 
-# DEV
+# EMBEDDED
+- [ADMIN]()
+    - [UEFI](es/uefi.md)
+
