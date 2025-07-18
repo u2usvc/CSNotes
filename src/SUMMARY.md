@@ -23,3 +23,5 @@
     - [Services]()
         - [sshd](infra/services/sshd.md)
         - [git server](infra/services/git-srv.md)
+    - [OS]()
+        - [gentoo](infra/os/gentoo.md)
