@@ -1,0 +1,16 @@
+[book]
+authors = ["u2usvc"]
+language = "en"
+src = "src"
+title = "cs-notes"
+create-missing = false
+
+[output.html]
+git-repository-url = "https://github.com/u2usvc/cs-notes"
+no-section-label = true
+default-theme = "dark"
+preferred-dark-theme = "coal"
+mathjax-support = true
+
+[output.html.fold]
+enable = true
