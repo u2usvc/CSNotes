@@ -22,3 +22,4 @@
         - [Crypto](infra/cli/crypto.md)
     - [Services]()
         - [sshd](infra/services/sshd.md)
+        - [git server](infra/services/git-srv.md)
