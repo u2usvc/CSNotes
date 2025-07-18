@@ -1,4 +1,4 @@
-- [About](../README.md)
+- [About](About.md)
 
 # NET
 - [ADMIN]()
