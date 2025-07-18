@@ -3,7 +3,8 @@ Usually documentation (if any) of certain utilities and applications is all over
 
 Because of this I've decided to create this repository to document tested techniques and practical usage examples for different types of technology I come across in a form of quick references.
 
-I will be slowly populating this repository with content from my local notes - I have lots of things to share.
+
+**This is very far from being complete: I will be slowly populating this repository with content from my local notes, I have lots of things to share.**
 
 
 <div class="warning">
