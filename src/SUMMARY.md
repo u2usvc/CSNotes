@@ -16,6 +16,7 @@
 - [AD]()
     - [KRB5]()
         - [* Ticket](infra/ad/krb5/tickets.md)
+        - [Roasting](infra/ad/krb5/roasting.md)
     - [ADCS]()
         - [ESC](infra/ad/adcs/escs.md)
 - [CLI]()
