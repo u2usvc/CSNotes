@@ -1,4 +1,99 @@
 .coal {
-  --sidebar-non-existant: #a1adb8;
-  --sidebar-fg: #e3e3e3
+  --sidebar-non-existant: #a89984;
+  /* --sidebar-fg: #e3e3e3; */
+
+  --bg: #111111;
+  --fg: #d1bb96;
+
+  --sidebar-bg: #111111;
+  --sidebar-fg: #a89984;
+  --sidebar-active: #83a598;
+  --sidebar-spacer: #3c3836;
+
+  --scrollbar: var(--sidebar-fg);
+
+  --icons: #504945;
+  --icons-hover: #d5c4a1;
+
+  --links: #458588;
+
+  --inline-code-color: #ebdbb2;
+
+  --theme-popup-bg: #1d2021;
+  --theme-popup-border: #504945;
+  --theme-hover: #32302f;
+
+  --quote-bg: #3c3836;
+  --quote-border: #504945;
+
+  --warning-border: #fe8019;
+
+  --table-border-color: #282828;
+  --table-header-bg: #3c3836;
+  --table-alternate-bg: #1d2021;
+
+  --searchbar-border-color: #928374;
+  --searchbar-bg: #d5c4a1;
+  --searchbar-fg: #1d2021;
+  --searchbar-shadow-color: #928374;
+  --searchresults-header-fg: #a89984;
+  --searchresults-border-color: #d4be98;
+  --searchresults-li-bg: #32302f;
+  --search-mark-bg: #458588;
+
+  --color-scheme: dark;
+
+  --copy-button-filter: invert(38%) sepia(9%) saturate(765%) hue-rotate(9deg) brightness(92%) contrast(88%);
+  --copy-button-filter-hover: invert(66%) sepia(9%) saturate(1040%) hue-rotate(138deg) brightness(88%) contrast(92%);
+
+  --footnote-highlight: #83a598;
+
+  --overlay-bg: rgba(29, 32, 33, 0.4);
+
+  --grey0: #7c6f64;
+  --green: #a9b665;
+  --yellow: #d8a657;
+  --orange: #e78a4e;
+  --red: #ea6962;
+  --aqua: #89b482;
+  --blue: #7daea3;
+  --purple: #d3869b;
+}
+
+.hljs {
+  background: #090909
+}
+
+.hljs-comment {
+	color: var(--grey0);
+}
+
+body {
+  font-size: 16px
+}
+
+h1 a {
+  font-family: "Lucida Console", "Courier New", monospace;
+  color: var(--green) !important;
+  /* font-size: 23px */
+}
+h2 a {
+  font-family: "Lucida Console", "Courier New", monospace;
+  color: var(--blue) !important;
+  /* font-size: 20px */
+}
+h3 a {
+  font-family: "Lucida Console", "Courier New", monospace;
+  color: var(--yellow) !important;
+  /* font-size: 17px */
+}
+h4 a {
+  font-family: "Lucida Console", "Courier New", monospace;
+  color: var(--orange);
+  /* font-size: 16px; */
+}
+h5 a {
+  font-family: "Lucida Console", "Courier New", monospace;
+  color: var(--purple);
+  /* font-size: 13px; */
 }
