@@ -20,6 +20,8 @@
         - [Delegation](infra/ad/krb5/delegation.md)
     - [ADCS]()
         - [ESC](infra/ad/adcs/escs.md)
+    - [LDAP]()
+        - [Shadow creds](infra/ad/ldap/shadow_creds.md)
 - [CLI]()
     - [Crypto](infra/cli/crypto.md)
 - [Services]()
