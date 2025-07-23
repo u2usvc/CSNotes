@@ -22,6 +22,7 @@
         - [ESC](infra/ad/adcs/escs.md)
     - [LDAP]()
         - [Shadow creds](infra/ad/ldap/shadow_creds.md)
+        - [Replication abuse](infra/ad/ldap/repl_abuse.md)
 - [CLI]()
     - [Crypto](infra/cli/crypto.md)
 - [Services]()
