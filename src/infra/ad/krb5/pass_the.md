@@ -1,7 +1,7 @@
 # Cred usage
 ## Pass-the-Ticket / Pass-the-Cache
 ### convert ccache to kirbi
-```
+```bash
 # convert ticket to kirbi for Rubeus or mimikatz
 impacket-ticketConverter Administrator.ccache Administrator.kirbi
 

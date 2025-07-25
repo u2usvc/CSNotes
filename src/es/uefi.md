@@ -9,7 +9,7 @@ wget https://github.com/tianocore/edk2/raw/UDK2018/ShellBinPkg/UefiShell/X64/She
 ```
 
 Usage:
-```
+```bash
 # show mapping table
 map
 
