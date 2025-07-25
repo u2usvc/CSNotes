@@ -27,6 +27,7 @@
 - [CLI]()
     - [Crypto](infra/cli/crypto.md)
     - [SELinux](infra/cli/selinux.md)
+    - [Libvirt/QEMU](infra/cli/qemu.md)
 - [Services]()
     - [sshd](infra/services/sshd.md)
     - [git server](infra/services/git-srv.md)
