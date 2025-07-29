@@ -1,6 +1,9 @@
 # Libvirt/QEMU
+
 ## QEMU
+
 ### disk creation
+
 ```bash
 # Emulated disk space management (also can shrink, resize an image or store overlay images (see arch-wiki))
 qemu-img create -f raw image_file 4G              # Create a raw disk space (`-f qcow2` to utilize dinamically-allocated format)
@@ -9,6 +12,7 @@ qemu-img convert -f raw -O qcow2 -o nocow=on input.iso output.qcow2  # specify -
 ```
 
 ### windows
+
 ```bash
 #!/bin/sh
 
@@ -37,7 +41,9 @@ exec spicy --title Windows 127.0.0.1 -p ${SPICE_PORT}
 ```
 
 ## Libvirt
+
 ### Prerequisites
+
 ```bash
 usermod -aG libvirt myuser
 
@@ -47,6 +53,7 @@ systemctl start libvirtd
 ```
 
 ### virt-install
+
 ```bash
 # define domain from iso (create a qcow2 image first)
 qemu-img create -f qcow2 debian-1.qcow2 10G
@@ -60,6 +67,7 @@ virt-install --osinfo list
 ```
 
 ### MT-CHR installation
+
 ```bash
 # unarchive
 unzip ~/Downloads/chr-7.16.1.vmdk.zip
@@ -70,11 +78,13 @@ virt-install --name=mt-chr-1 --vcpus=1 --memory=512 --disk path=./chr-7.16.1.qco
 ```
 
 ### resize qcow2 partition
+
 ```bash
 virt-resize --expand /dev/sda4 fcos-1.qcow2 fcos-2.qcow2
 ```
 
 ### `emulator does not support machine type` error
+
 ```bash
 qemu-system-x86_64 -machine help
 # find your machine type in there, if it's not present find the latest 
@@ -83,7 +93,8 @@ virsh edit Windows-10-Desktop-2
 # change the value under <type machine="XXX"> to either the one listed under `-machine help`
 ```
 
-### change pool location 
+### change pool location
+
 ```bash
 virsh shutdown my-vm-name
 rsync -a /var/lib/libvirt/images/my-vm-name /var/lib/libvirt/new-dir/
@@ -93,6 +104,7 @@ virsh start my-vm-name
 ```
 
 ### delete domain completely
+
 ```bash
 virsh destroy _domain-id_
 virsh undefine _domain-id_
@@ -106,6 +118,7 @@ virsh vol-delete --pool vg0 _domain-id_.img
 ```
 
 ### `virsh start` permission denied error
+
 ```bash
 sudo usermod -a -G kvm myusername
 
@@ -114,7 +127,8 @@ user = "myusername"
 group = "kvm"
 ```
 
-### fix libvirt domains' traffic on NAT networks not being masqueraded because of ufw
+### fix NAT issues (nftables)
+
 ```bash
 cat /etc/default/ufw | grep DEFAULT_FORWARD_POLICY
 # DEFAULT_FORWARD_POLICY="DROP" -------> ACCEPT
@@ -123,13 +137,41 @@ DEFAULT_FORWARD_POLICY="ACCEPT"
 ufw reload
 ```
 
+```bash
+sudo grep 'firewall_backend' /etc/libvirt/network.conf
+# firewall_backend = "nftables"
+
+# 1) attempt to purge nftables ruleset
+sudo nft flush ruleset
+
+# 2.1) ensure firewalld (or whatever frontend you are using) repopulates nft ruleset
+sudo systemctl restart firewalld
+# 2.2) ensure libvirtd is started before libvirt_network is started
+sudo systemctl restart libvirtd
+
+# 3) ensure nftables ruleset is repopulated by firewalld
+sudo nft list ruleset
+
+# 4) ensure kernel forwarding is enabled
+sysctl net.ipv4.ip_forward
+# net.ipv4.ip_forward = 1
+
+# 5) start all necessary resources
+virsh net-start --network default
+virsh start debian-tmp-1
+virsh console --domain debian-tmp-1
+# ping 1.1.1.1
+```
+
 ### fix libvirt dnsmasq address already in use issue
+
 ```bash
 sudo rc-update del dnsmasq
 sudo rc-service dnsmasq stop
 ```
 
 OR
+
 ```bash
 # make dnsmasq listen on specific interface
 interface=eth0
@@ -140,7 +182,8 @@ listen-address=192.168.0.1
 bind-interfaces
 ```
 
-### get dnsmasq definitions for the vnet 
+### get dnsmasq definitions for the vnet
+
 ```bash
 sudo ls -la /var/lib/libvirt/dnsmasq/fcos*
 # -rw-r--r--. 1 root root 104 Jul 22 18:30 /var/lib/libvirt/dnsmasq/fcos_k8s_lab.addnhosts
@@ -149,6 +192,7 @@ sudo ls -la /var/lib/libvirt/dnsmasq/fcos*
 ```
 
 ### rename a domain
+
 ```bash
 virsh dumpxml $DOMAIN > $SOMEFILE.xml
 virsh undefine $DOMAIN
@@ -159,6 +203,7 @@ virsh start $DOMAIN
 ```
 
 ### allocate memory to a domain
+
 ```bash
 virsh destroy $DOMAIN
 virsh setmaxmem $DOMAIN 3G --config
@@ -167,12 +212,14 @@ virsh start $DOMAIN
 ```
 
 ### allocate vcpu to a domain
+
 ```bash
 virsh setvcpus $DOMAIN 3 --config --maximum
 virsh setvcpus $DOMAIN 3 --config
 ```
 
-### create an isolated network 
+### create an isolated network
+
 ```xml
 <network>
   <name>fcos_k8s_lab</name>
@@ -197,6 +244,7 @@ virsh setvcpus $DOMAIN 3 --config
 ```
 
 ### attach multiple interfaces to 1 host
+
 ```bash
 ### ATTACH A BRIDGE TO HOST/ANOTHER VM
 # this will create the corresponding virtual NIC on a VM
@@ -209,7 +257,8 @@ virsh attach-interface --type bridge --source virbr15 --model virtio --domain mt
 virsh attach-interface --type network --source ad_lab --model virtio --domain mt-chr-1 --persistent
 ```
 
-### basic network definition template 
+### basic network definition template
+
 ```xml
 <network>
   <name>advenv_net</name>
