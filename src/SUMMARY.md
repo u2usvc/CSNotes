@@ -6,51 +6,52 @@
 
 ---
 
-# EMBEDDED
+# HARDWARE / EMBEDDED
 
-- [UEFI](es/uefi.md)
-- [ESP](es/esp.md)
-- [FW RE](es/fw_re.md)
+- [UEFI](hw_es/uefi.md)
+- [ESP](hw_es/esp.md)
+- [FW RE](hw_es/fw_re.md)
 
 ---
 
-# AD/NATIVE
+# NATIVE
 
-- [AD]()
-  - [KRB5]()
-    - [* Ticket](infra/ad/krb5/tickets.md)
-    - [Roasting](infra/ad/krb5/roasting.md)
-    - [Delegation](infra/ad/krb5/delegation.md)
-    - [Cred usage](infra/ad/krb5/pass_the.md)
-  - [ADCS]()
-    - [ESC](infra/ad/adcs/escs.md)
-  - [LDAP]()
-    - [Shadow creds](infra/ad/ldap/shadow_creds.md)
-    - [Replication abuse](infra/ad/ldap/repl_abuse.md)
 - [CLI]()
-  - [Crypto](infra/cli/crypto.md)
-  - [SELinux](infra/cli/selinux.md)
-  - [Libvirt/QEMU](infra/cli/qemu.md)
+  - [Crypto](native/cli/crypto.md)
+  - [SELinux](native/cli/selinux.md)
+  - [Libvirt/QEMU](native/cli/qemu.md)
 - [Services]()
-  - [sshd](infra/services/sshd.md)
-  - [git server](infra/services/git-srv.md)
+  - [sshd](native/services/sshd.md)
+  - [git server](native/services/git-srv.md)
 - [OS]()
-  - [gentoo](infra/os/gentoo.md)
+  - [gentoo](native/os/gentoo.md)
+  - [FS](native/os/fs.md)
+  - [Users](native/os/users.md)
+- [DEV]()
+  - [git](native/dev/git.md)
+  - [clangd](native/dev/clangd.md)
+  - [android](native/dev/android.md)
+
+---
+
+# AD
+
+- [KRB5]()
+  - [* Ticket](ad/krb5/tickets.md)
+  - [Roasting](ad/krb5/roasting.md)
+  - [Delegation](ad/krb5/delegation.md)
+  - [Cred usage](ad/krb5/pass_the.md)
+- [ADCS]()
+  - [ESC](ad/adcs/escs.md)
+- [LDAP]()
+  - [Shadow creds](ad/ldap/shadow_creds.md)
+  - [Replication abuse](ad/ldap/repl_abuse.md)
 
 ---
 
 # WEB2
 
-- [Recon](web2/recon/utils.md)
-
----
-
-# DEV
-
-- [CLI]()
-  - [git](dev/dev/cli/git.md)
-  - [clangd](dev/dev/cli/clangd.md)
-  - [android](dev/dev/cli/android.md)
+- [Recon](web2/utils.md)
 
 ---
 

@@ -1,5 +1,41 @@
 # Recon
+
+## misc
+
+- [default 404s](https://0xdf.gitlab.io/cheatsheets/404)
+
+## nuclei
+
+- [template examples](https://github.com/projectdiscovery/nuclei-templates)
+
+```bash
+# generic scan (default fingerprinting templates)
+nuclei -u https://example.com
+
+# use with a custom template
+nuclei -u https://example.com -t ./my-template.yaml
+
+# use with multiple URLs and multiple templates
+git clone https://github.com/projectdiscovery/nuclei-templates.git
+nuclei -l urls.txt -t 'nuclei-templates/passive/cves/2024/*.yaml'
+```
+
+## params
+
+```bash
+### %s is replaced with parameters as so: {"x":{"a":"b3a1a", "b":"ce03a", ...}}
+
+# check parameters in query
+x8 -u "https://example.com/" -w <wordlist>
+# https://example.com/?%s
+
+# check combination with required parameters
+x8 -u "https://example.com/?something=1" -w <wordlist>
+# https://example.com/?something=1&%s
+```
+
 ## FFuF
+
 ```bash
 ffuf -c [colorize output] -mc 200,301 [match status codes] -fc 404 [exclude status codes from response] -u https://google.com/FUZZ -w [WORDLIST_PATH] -recursion -e .exe [files with .exe] -s [silent] -of html [output in html file] -o output-file -b "cookie1=smth; cookie2=smth" -H "X-Custom-Header: smth" -se [stop on errors] -p 2 [2 second delay] -t 150 [threads]
 
