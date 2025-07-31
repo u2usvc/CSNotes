@@ -20,6 +20,7 @@
   - [Crypto](native/cli/crypto.md)
   - [SELinux](native/cli/selinux.md)
   - [Libvirt/QEMU](native/cli/qemu.md)
+  - [Data exchange](native/cli/data_exchange.md)
 - [Services]()
   - [sshd](native/services/sshd.md)
   - [git server](native/services/git-srv.md)
