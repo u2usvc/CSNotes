@@ -168,3 +168,39 @@ use $SHARE                 # use a share
 get $FILE                  # download file
 mget *                     # download everything from current directory
 ```
+
+## win SMB
+
+```bash
+##################
+### POWERSHELL ###
+##################
+### CREATION
+# creates an smb share and grants "Finance Users" and "HR Users" write access.
+New-SmbShare -Name 'VMSFiles' -Path 'C:\ClusterStorage\Volume1\VMFiles' -ChangeAccess 'CONTOSO\Finance Users','CONTOSO\HR Users' -FullAccess 'Administrators'
+
+### MOUNT
+# mounts smb share
+New-SmbMapping -LocalPath 'X:' -RemotePath '\\192.168.1.69\VMFiles'
+
+
+###########
+### CMD ###
+###########
+# creates an smb share and grants everyone full access
+net share Public=C:\ClusterStorage\Volume1\VMFiles /GRANT:Everyone,FULL
+# net share create sometimes doesnt work - try without /GRANT !!!
+# without GRANT it allows Everyone to READ the share (Everyone is any local or domain user)
+# !!!!!!!!!!!!!!!!!!!!!
+# DO NOT FORGET TO EDIT THE NTFS SECURITY SETTINGS OF THE SHARED DIRECTORY AS WELL
+# GUI (File Manager): $DIR_NAME -> Properties -> Security -> Edit
+# !!!!!!!!!!!!!!!!!!!!!
+# USER that is accessing the share must be valid either locally to the machine or in the domain
+smbclient //192.168.122.13/Public --user victor
+
+### MOUNT smb share to X:
+net use X: \\SERVER\Share
+
+### UNMOUNT
+net use X: /delete
+```

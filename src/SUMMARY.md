@@ -21,6 +21,7 @@
   - [SELinux](native/cli/selinux.md)
   - [Libvirt/QEMU](native/cli/qemu.md)
   - [Data exchange](native/cli/data_exchange.md)
+  - [Remote management](native/cli/remote_mgmt.md)
 - [Services]()
   - [sshd](native/services/sshd.md)
   - [git server](native/services/git-srv.md)
@@ -47,6 +48,7 @@
 - [LDAP]()
   - [Shadow creds](ad/ldap/shadow_creds.md)
   - [Replication abuse](ad/ldap/repl_abuse.md)
+  - [General](ad/ldap/general.md)
 
 ---
 
