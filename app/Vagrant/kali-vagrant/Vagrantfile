@@ -1,0 +1,20 @@
+Vagrant.configure("2") do |config|
+  config.vm.define "kalilinux" do |kali|
+
+    kali.vm.box = "kalilinux/rolling"
+
+    # mv from nfs to rsync
+    kali.vm.synced_folder ".", "/vagrant", type: 'rsync'
+    kali.vm.synced_folder "./config", "/home/vagrant/.config", type: 'rsync'
+
+    kali.vm.provision "shell", path: "scripts/install_tpm.sh"
+    kali.vm.provision "shell", path: "scripts/install_software.sh"
+
+    # Libvirt provider settings
+    kali.vm.provider :libvirt do |libvirt|
+      libvirt.memory = 8192
+      libvirt.cpus = 2
+    end
+
+  end
+end
