@@ -8,7 +8,7 @@ create-missing = false
 [output.html]
 git-repository-url = "https://github.com/u2usvc/cs-notes"
 # no-section-label = true
-default-theme = "dark"
+default-theme = "coal"
 preferred-dark-theme = "coal"
 mathjax-support = true
 additional-css = ["custom.css"]

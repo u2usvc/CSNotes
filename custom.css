@@ -60,40 +60,45 @@
   --purple: #d3869b;
 }
 
-.hljs {
-  background: #090909
+.coal .hljs {
+  background: #090909;
 }
 
-.hljs-comment {
-	color: var(--grey0);
+.coal .hljs-comment {
+  color: var(--grey0);
 }
 
-body {
-  font-size: 16px
+.coal body {
+  font-size: 16px;
 }
 
-h1 a {
+.coal h1 a {
   font-family: "Lucida Console", "Courier New", monospace;
   color: var(--green) !important;
   /* font-size: 23px */
 }
-h2 a {
+
+.coal h2 a {
   font-family: "Lucida Console", "Courier New", monospace;
   color: var(--blue) !important;
   /* font-size: 20px */
 }
-h3 a {
+
+.coal h3 a {
   font-family: "Lucida Console", "Courier New", monospace;
   color: var(--yellow) !important;
   /* font-size: 17px */
 }
-h4 a {
+
+.coal h4 a {
   font-family: "Lucida Console", "Courier New", monospace;
   color: var(--orange);
   /* font-size: 16px; */
 }
-h5 a {
+
+.coal h5 a {
   font-family: "Lucida Console", "Courier New", monospace;
   color: var(--purple);
   /* font-size: 13px; */
 }
+
