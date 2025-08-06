@@ -1,5 +1,7 @@
 # Crypto
+
 ## gpg
+
 ```bash
 # generate the key
 gpg --full-gen-key
@@ -19,8 +21,8 @@ gpg --output $FILE --export $KEY_UID            # add --armor to export in ASCII
 gpg --output $OUT_FILE --encrypt --recipient $KEY_UID $FILE
 ```
 
-
 ## pass
+
 ```bash
 gpg --full-gen-key
 pass init $GPG_ID                   # will reencrypt
@@ -36,3 +38,14 @@ pass generate dir/file $NUM         # Generate password
 PASSWORD_STORE_DIR=/mnt/sda1/my/password/storage
 ```
 
+## LUKS FS within a file
+
+<https://www.lpenz.org/articles/luksfile/>
+
+```bash
+dd if=/dev/zero of=cryptfile.img bs=1M count=64
+sudo cryptsetup luksFormat cryptfile.img
+sudo cryptsetup luksOpen cryptfile.img cryptdev
+sudo mkfs.ext4 /dev/mapper/cryptdev
+sudo cryptsetup luksClose cryptdev
+```
