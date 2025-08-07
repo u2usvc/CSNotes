@@ -1,12 +1,81 @@
 # gentoo
+
+## Portage
+
+Cleaning:
+
+```bash
+# Removing
+emerge --deselect $PACKAGE_NAME
+emerge --depclean                                               # Clean all non-required dependencies
+emerge --prune $PACKAGE                                         # Remove all old versions of a package
+
+sudo eclean-dist
+sudo eclean-pkg
+# leave only 2 newest kernels
+sudo eclean-kernel -n 2 
+```
+
+Search:
+
+```bash
+emerge --search $package_name
+emerge --searchdesc $desc
+e-file $file_name                    # search what package contains $file
+```
+
+Install:
+
+```bash
+--exclude 'dev-util/android-tools'
+
+emerge --fetchonly $package_name                                       # only fetch sources
+emerge --oneshot                                                       # not include the installed package into @world
+emerge --ask --autounmask-backtrack y --autounmask y $package_name     # display all masked packages recursively
+emerge -av $package:$version                                           # e.g. dev-java/openjdk-bin:11
+
+# system update
+emerge --sync
+emerge --update --deep --newuse @world                          # or `changed-use` to recompile non-updated packages with new use flags
+sudo emerge -auvd --newuse --with-bdeps=y --keep-going=y @world
+
+# reinstalling
+emerge -1av --noconfmem $package                                # do not preserve existing config files
+
+# keep going even after error
+emerge --keep-going=y
+```
+
+## distcc
+
+```bash
+--allow              # allow specific hosts/subnets
+--port               # specify port to listen on
+
+#############
+### USAGE ###
+#############
+### START THE DAEMON ON ALL HOSTS
+### EDIT /etc/distcc/hosts ON COMPILING HOST
+### EDIT /etc/portage/make.conf ON CLIENTS:
+MAKEOPTS="-jN -lM"             # refering to the compiling host's hardware
+FEATURES="distcc"
+COMMON_FLAGS="-march=native"   # DO NOT USE MARCH=NATIVE, determine with cpuid -1 | grep uarch
+
+### ON CLIENT ADD COMPILING HOSTS AS FOLLOWS:
+distcc-config --set-hosts "192.168.0.1,cpp,lzo 192.168.0.2,cpp,lzo 192.168.0.3,cpp,lzo"
+```
+
+## Reasonably secure installation
+
 #### About
 
 [doc: gentoo](https://wiki.gentoo.org/wiki/Full_Disk_Encryption_From_Scratch)
+
 1. Passwords and keys protect keyslots on the LUKS header, which contains the master key that actually encrypts the partition data.
 2. The header file must be kept safe. If the header file is lost, all data on the LUKS partition it secured will be irrecoverable.
 3. For this, use system with the same kernel as target system
 4. This setup will require the usage of initramfs, because there should be a pre-fs to decrypt the primary fs.
-
 
 #### Process
 
@@ -14,6 +83,7 @@
 - burden it with cat
 - boot with the ethernet cable connected
 - partition as told here: [https://wiki.gentoo.org/wiki/Full_Disk_Encryption_From_Scratch#Disk_preparation](https://wiki.gentoo.org/wiki/Full_Disk_Encryption_From_Scratch#Disk_preparation)
+
 ```bash
 ### PARTITION AS FOLLOWS (see gentoo doc link)
 # sda1 will hold GRUB
@@ -31,6 +101,7 @@
 ```
 
 - encrypt the fs
+
 ```bash
 ### IF YOU WANT TO USE SMARTCARD / YUBIKEY USE ASYMMETRIC ENCRYPTION INSTEAD
 # GPG Symmetrically Encrypted Key File (don't forget to move it to boot drive later):
@@ -45,6 +116,7 @@ sudo gpg --decrypt crypt_key.luks.gpg | sudo cryptsetup --key-file - open /dev/n
 ```
 
 - mount root and format drives
+
 ```bash
 ### FORMAT AS FOLLOWS:
 # boot drive:
@@ -61,7 +133,9 @@ btrfs subvolume create /mnt/gentoo/etc
 btrfs subvolume create /mnt/gentoo/home
 btrfs subvolume create /mnt/gentoo/var
 ```
+
 - obtain stage tarball & unpack
+
 ```bash
 cd /mnt/gentoo
 # set time
@@ -72,6 +146,7 @@ tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner
 ```
 
 - configure compile options
+
 ```bash
 COMMON_FLAGS="-march=native -O2 -pipe"
 FEATURES="${FEATURES} getbinpkg"
@@ -92,6 +167,7 @@ EMERGE_DEFAULT_OPTS="--getbinpkg"
 ```
 
 - chroot
+
 ```bash
 cp --dereference /etc/resolv.conf /mnt/gentoo/etc/
 arch-chroot /mnt/gentoo
@@ -100,12 +176,14 @@ export PS1="(chroot) ${PS1}"
 ```
 
 - prepare for bootloader
+
 ```bash
 mkdir /efi
 mount /dev/sda1 /efi
 ```
 
 - portage sync
+
 ```bash
 emerge-webrsync
 eselect news list
@@ -113,6 +191,7 @@ eselect news read
 ```
 
 - choose profile
+
 ```bash
 eselect profile set 43
 eselect profile list
@@ -120,6 +199,7 @@ eselect profile list
 ```
 
 - configure the binhost
+
 ```bash
 ### /etc/portage/binrepos.conf/gentoobinhost.conf
 [binhost]
@@ -132,6 +212,7 @@ getuto
 ```
 
 - configure licensing
+
 ```bash
 echo "sys-kernel/linux-firmware @BINARY-REDISTRIBUTABLE" | tee -a /etc/portage/package.license
 echo "sys-firmware/intel-microcode intel-ucode" | tee -a /etc/portage/package.accept_keywords
@@ -139,18 +220,21 @@ echo "sys-firmware/intel-microcode ~amd64" | tee -a /etc/portage/package.accept_
 ```
 
 - update @world
+
 ```bash
 emerge --ask --verbose --update --deep --newuse @world
 emerge --ask --depclean
 ```
 
 - configure timezones
+
 ```bash
 echo "Europe/Germany" > /etc/timezone
 emerge --config sys-libs/timezone-data
 ```
 
 - configure locales
+
 ```bash
 ### /etc/locale.gen
 en_US ISO-8859-1
@@ -164,6 +248,7 @@ env-update && source /etc/profile && export PS1="(chroot) ${PS1}"
 ```
 
 - install microcode and firmware
+
 ```bash
 # microcode for AMD is also in this package:
 emerge --ask sys-kernel/linux-firmware
@@ -172,6 +257,7 @@ emerge -av cryptsetup btrfs btrfs-progs
 ```
 
 - configure installkernel with dracut
+
 ```bash
 ### /etc/portage/package.use/installkernel
 sys-kernel/installkernel dracut grub
@@ -179,6 +265,7 @@ sys-kernel/installkernel dracut grub
 
 - installer-side configure dracut
   dracut will be run automatically by `emerge gentoo-kernel-bin` and generate an initramfs inside /boot
+
 ```bash
 ### /etc/dracut.conf
 # minimum components to decrypt LUKS volumes using dracut
@@ -194,6 +281,7 @@ GRUB_DEVICE=UUID=cb070f9e-da0e-4bc5-825c-b01bb2707704
 
 - install signed kernel
   if EFI binaries will be signed with a custom key for secure boot make.conf should be adjusted: [https://wiki.gentoo.org/wiki/Handbook:AMD64/Full/Installation#Optional:_Signed_kernel_modules](https://wiki.gentoo.org/wiki/Handbook:AMD64/Full/Installation#Optional:_Signed_kernel_modules)
+
 ```bash
 emerge -av gentoo-sources
 emerge -av dracut
@@ -206,6 +294,7 @@ emerge --depclean
 ```
 
 - configure fstab
+
 ```bash
 ### lsblk -o name,uuid
 NAME        UUID
@@ -216,6 +305,7 @@ nvme0n1
 └─nvme0n1p1 4bb45bd6-9ed9-44b3-b547-b411079f043b
   └─root    cb070f9e-da0e-4bc5-825c-b01bb2707704
 ```
+
 ```bash
 # <fs>                                          <mountpoint>    <type>          <opts>          <dump/pass>
 UUID=BDF2-0139                                  /efi            vfat            noauto,noatime  0 1
@@ -224,11 +314,13 @@ LABEL=rootfs                                    /               btrfs           
 ```
 
 - define hostname
+
 ```bash
 echo tux > /etc/hostname
 ```
 
 - setup dhcpcd
+
 ```bash
 emerge --ask net-misc/dhcpcd
 rc-update add dhcpcd default
@@ -236,6 +328,7 @@ rc-service dhcpcd start
 ```
 
 - setup hosts
+
 ```bash
 192.168.1.69    dc-1.aisp.example.local
 127.0.0.1       localhost
@@ -243,12 +336,14 @@ rc-service dhcpcd start
 ```
 
 - general system setup
+
 ```bash
 passwd
 emerge --ask net-misc/chrony
 ```
 
 - defining bootloader
+
 ```bash
 emerge -av sys-boot/grub
 grub-install --efi-directory=/efi
@@ -256,6 +351,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 - create swapfile
+
 ```bash
 btrfs subvolume create swap_vol
 chattr +C swap_vol
@@ -269,6 +365,7 @@ swapon swap_vol/swapfile
 ```
 
 - SELinux-relabel the fs (opt)
+
 ```bash
 mkdir /mnt/gentoo
 mount -o bind / /mnt/gentoo
@@ -288,6 +385,7 @@ grub-mkconfig
 ```
 
 - SELinux user map
+
 ```bash
 # map an existing administrative user to a domain other that unconfined_u
 semanage login -a -s staff_u john
@@ -300,6 +398,7 @@ semanage user -m -R "staff_r sysadm_r system_r" staff_u
 ```
 
 - /etc/sudoers
+
 ```bash
 %wheel ALL=(ALL) TYPE=sysadm_t ROLE=sysadm_r ALL
 ```
@@ -385,4 +484,3 @@ reboot
 ```
 
 - Make sure to lock UEFI with a strong passphrase and enable DMA protection!
-
