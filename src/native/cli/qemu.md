@@ -66,6 +66,42 @@ virt-install --name debian-test-2 --memory 1000 --vcpus 2 --osinfo debian12 --di
 virt-install --osinfo list
 ```
 
+Windows domain installation example:
+
+```bash
+home=/home/fuser/virt
+name="Windows-Server-2016-2"
+memmax=6144 # in Mb
+cpu=2
+disk_path=$home/ActiveDirectoryLab/$name.img
+disk_size=51.2 # In Gb
+cdrom_path=$home/iso-cdrom/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO
+# cdrom_path=$home/iso-cdrom/Win10_22H2_English_x64v1.iso
+virtio_path=$home/iso-cdrom/virtio-win-0.1.240.iso
+os_type=windows
+os_variant=win2k12r2
+# os_variant=win10
+
+/usr/bin/virt-install \
+  --connect qemu:///system \
+  --name=$name \
+  --ram=$memmax \
+  --vcpus=$cpu \
+  --cpu host \
+  --cdrom=$cdrom_path \
+  --os-type=$os_type \
+  --os-variant=$os_variant \
+  --disk path=$disk_path,device=disk,bus=virtio,size=$disk_size,format=qcow2 \
+  --disk path=$virtio_path,device=cdrom --force \
+  --boot uefi,cdrom,hd,menu=on \
+  --network bridge=virbr5,model=e1000e \
+  --graphics vnc,listen=0.0.0.0 \
+  --video=qxl \
+  --accelerate \
+  --noautoconsole \
+  --hvm
+```
+
 ### MT-CHR installation
 
 ```bash
@@ -258,6 +294,8 @@ virsh attach-interface --type network --source ad_lab --model virtio --domain mt
 ```
 
 ### basic network definition template
+
+You may use `virsh net-define /usr/share/libvirt/networks/default.xml` to define an initial network configuration.
 
 ```xml
 <network>
