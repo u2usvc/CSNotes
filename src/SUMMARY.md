@@ -31,7 +31,7 @@
   - [Access control](native/os/ac.md)
 - [DEV]()
   - [git](native/dev/git.md)
-  - [clangd](native/dev/clangd.md)
+  - [IDE](native/dev/ide.md)
   - [android](native/dev/android.md)
 
 ---
