@@ -26,7 +26,7 @@
   - [sshd](native/services/sshd.md)
   - [git server](native/services/git-srv.md)
 - [OS]()
-  - [gentoo](native/os/gentoo.md)
+  - [Misc](native/os/misc.md)
   - [FS](native/os/fs.md)
   - [Access control](native/os/ac.md)
 - [DEV]()

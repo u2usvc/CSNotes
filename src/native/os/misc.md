@@ -1,3 +1,16 @@
+# qubes
+
+## copy file to dom0
+
+```bash
+### FOR TEXT FILES
+qvm-run -p --filter-escape-chars --no-color-output $QUBE_NAME "cat '$FILE_PATH'" > $DESTINATION
+# qvm-run -p --filter-escape-chars --no-color-output tech "cat '/home/user/Downloads/install.sh'" > install.sh
+
+### FOR BIN FILES
+qvm-run --pass-io $QUBE_NAME "cat '$FILE_PATH'" > $DESTINATION
+```
+
 # gentoo
 
 ## Portage
