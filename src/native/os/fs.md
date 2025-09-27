@@ -135,3 +135,17 @@ btrfs scrub start $SVOL
 # balance subvolume
 btrfs balance start -musage=50 -dusage=50 $SVOL
 ```
+
+## mount qcow2
+
+```bash
+guestfish -a $FILE.qcow2
+> run
+> list-filesystems
+
+guestmount -a $FILE.qcow2 -m /dev/vg0/root /mnt/
+cd /mnt/
+
+# umount
+guestunmount $MOUNT_POINT
+```
