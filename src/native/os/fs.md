@@ -149,3 +149,45 @@ cd /mnt/
 # umount
 guestunmount $MOUNT_POINT
 ```
+
+## RAID-Z quickstart
+
+```bash
+ls -la /dev/disk/by-id
+# lrwxrwxrwx  1 root root   9 Sep 29 03:34 wwn-0x5000c5005ac3368e -> ../../sdb
+# lrwxrwxrwx  1 root root   9 Sep 29 03:34 wwn-0x5000c500a20704c9 -> ../../sdc
+# lrwxrwxrwx  1 root root   9 Sep 29 03:34 wwn-0x5000c500be464151 -> ../../sda
+
+# create raidz1 pool
+sudo zpool create tank -f raidz wwn-0x5000c5005ac3368e wwn-0x5000c500a20704c9 wwn-0x5000c500be464151
+
+sudo zpool status
+#   pool: tank
+#  state: ONLINE
+# config:
+# 
+#         NAME                        STATE     READ WRITE CKSUM
+#         tank                        ONLINE       0     0     0
+#           raidz1-0                  ONLINE       0     0     0
+#             wwn-0x5000c5005ac3368e  ONLINE       0     0     0
+#             wwn-0x5000c500a20704c9  ONLINE       0     0     0
+#             wwn-0x5000c500be464151  ONLINE       0     0     0
+# 
+# errors: No known data errors
+```
+
+```bash
+# create an FS on pool and mount it
+sudo zfs create -o mountpoint=/data tank/data
+
+sudo zfs list
+```
+
+### Migration
+
+```bash
+# on a source system list features of the pool
+zpool get all $POOL_NAME | grep feature@
+# on a target system ensure that all pool features are supported by ZFS
+zpool upgrade
+```
