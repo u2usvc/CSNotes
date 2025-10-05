@@ -190,4 +190,10 @@ sudo zfs list
 zpool get all $POOL_NAME | grep feature@
 # on a target system ensure that all pool features are supported by ZFS
 zpool upgrade
+
+# discover available pools
+zpool import
+
+# import existing pool
+zpool import $POOL -f
 ```
