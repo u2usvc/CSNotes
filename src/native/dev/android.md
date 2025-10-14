@@ -47,6 +47,27 @@ cmd package install-existing $PACKAGE
 
 # query all permissions for a package
 appops get me.zhanghai.android.files
+
+# disable package ???
+pm disable $PACKAGE
+```
+
+## fastboot
+
+```bash
+# reboot to bootloader
+adb -d reboot bootloader
+
+# list connected devices
+fastboot devices
+
+fastboot flashing unlock 
+
+# display all vars
+fastboot getvar all
+
+# manufacturer-specific
+fastboot oem
 ```
 
 ## adbsync
@@ -76,3 +97,8 @@ echo '192.168.1.69 dc-1.aisp.aperture.local' >> ~/.hosts
 echo "HOSTALIASES=~/.hosts" > ~/.bashrc
 wget g -O /dev/null
 ```
+
+### integrate nvim yank/paste with system clipboard
+
+- install Termux-API and follow the setup instructions
+- `pkg install termux-api`
