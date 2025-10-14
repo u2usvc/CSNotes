@@ -44,6 +44,8 @@
   - [Roasting](ad/krb5/roasting.md)
   - [Delegation](ad/krb5/delegation.md)
   - [Cred usage](ad/krb5/pass_the.md)
+- [ADDS]()
+  - [Admin](ad/adds/adm.md)
 - [ADCS]()
   - [ESC](ad/adcs/escs.md)
 - [LDAP]()
