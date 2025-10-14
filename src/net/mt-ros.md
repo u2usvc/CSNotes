@@ -1,6 +1,34 @@
+## prevent ARP spoofing
+
+```bash
+# dhcp-server will now automatically add leases to routeros arp table
+/ip/dhcp-server/set add-arp=yes numbers=defconf
+/interface/bridge/set arp=reply-only numbers=bridge
+```
+
+## ssh by key
+
+```bash
+/file/add name=mtusr.pub contents="ssh-ed25519 thisismypublickey usr@debian" type=file
+/user ssh-keys import public-key-file=mtusr.pub user=mtusr
+/ip ssh set strong-crypto=yes
+/ip ssh set always-allow-password-login=no
+```
+
+## MAC TELNET
+
+```bash
+/ip/service/enable numbers=telnet
+/interfaces/print
+
+sudo apt install mactelnet-client
+mactelnet $MAC
+```
+
 ## VLAN
 
 frame-types:
+
 ```bash
 # only tagged traffic will be send out (set this on trunk ports) 
 # (if you send it on bridge it means that only tagged traffic will be send OUT OF THE TRUNK PORT)
@@ -12,6 +40,7 @@ frame-types=admit-only-untagged-and-priority-tagged
 ```
 
 VLAN switching:
+
 ```bash
 # {https://forum.mikrotik.com/viewtopic.php?t=180903}
 # add bridge for vlan switching (a single bridge should be used generaly (if multiple bridges are used - bringing will not be able to be hardware-offloaded (i.e. more CPU load)))
@@ -63,6 +92,7 @@ ip/pool/add name=vlan-30-pool ranges=192.168.30.100-192.168.30.200
 ```
 
 OPTIONAL: add VRRP
+
 ```bash
 ### MIRROR THIS CONFIGURATION ON A SECOND ROUTER, BUT WITH DIFFERENT PRIORITY
 /interface vrrp add name=vrrp-m-20 interface=vlan-20 vrid=20 priority=200
@@ -78,16 +108,18 @@ OPTIONAL: add VRRP
 ```
 
 OPTIONAL: VLAN isolation
+
 ```bash
 add action=drop chain=forward dst-address=192.168.55.0/27 src-address=192.168.80.0/24
 ```
 
-
 ## VRRP
+
 1. vrid is an ID of a VIRTUAL router, each needs to have a unique ID.
 2. `authentication=none` is default (TODO) non-none values are only supported if version != 3
 3. `priority=100` is default (Higher priority wins!)
 4. Upon entering a backup state the IP address assigned to VRRP interface SHOULD become Invalid, this is expected!
+
 ```bash
 #    |----|          |----|  
 #    | R1 |          | R2 |
@@ -122,8 +154,8 @@ add action=drop chain=forward dst-address=192.168.55.0/27 src-address=192.168.80
 /ip address add address=192.168.1.101/32 interface=vrrp-3
 ```
 
-
 ## VXLAN
+
 ```bash
 ### on customer's side you CAN also configure VLANs to separate traffic
 
@@ -144,9 +176,10 @@ add action=drop chain=forward dst-address=192.168.55.0/27 src-address=192.168.80
 /interface/bridge/port/add interface=vxlan-vni-102 bridge=vxlan-br-102
 ```
 
-
 ## VPLS
+
 Scenario: 2 routers in different locations, 1 customer on both sides wanting a connectivity between these 2 sites.
+
 ```bash
 # R1 (IP : 10.0.0.1)
 /interface/bridge/add name=vpls-tun-1
@@ -170,10 +203,11 @@ Scenario: 2 routers in different locations, 1 customer on both sides wanting a c
 # check
 /interface/vpls/monitor
 ```
+
 Clients now can set an address on upstream interfaces (that're connected to your routers) and communicate with each other on the same subnet (ofc you do NOT need to set any addresses on your routers)
 
-
 ## OSPF
+
 1. seems to not work with LAG in GNS3
 2. To enable the use of BFD for OSPF neighbors, enable use-bfd for required entries in /routing ospf interface-template menu. (see *BFD* section)
 
@@ -200,6 +234,7 @@ Clients now can set an address on upstream interfaces (that're connected to your
 ```
 
 ## BFD
+
 ```bash
 # enable BFD on interfaces (you can just use interfaces=all)
 # `min-tx/min-rx = 1` means 1 second interval
@@ -208,6 +243,7 @@ Clients now can set an address on upstream interfaces (that're connected to your
 ```
 
 ## DoH
+
 ```bash
 # set the cloudflare server ("servers" is to resolve the DoH server itself, use-doh-server is a DoH server address)
 /ip/dns/set verify-doh-cert=yes allow-remote-requests=yes doh-max-concurent-queries=100 doh-max-server-connections=20 doh-timeout=6s servers=1.1.1.1,1.0.0.1 use-doh-server=https://cloudflare-dns.com/dns-query
@@ -218,4 +254,47 @@ Clients now can set an address on upstream interfaces (that're connected to your
 
 /certificate/import file-name=one-one-one-chain.pem
 # certificates-imported: 3
+```
+
+## flash
+
+```bash
+sudo nvim /etc/network/interfaces
+# auto enx00e04c36350d
+# iface enx00e04c36350d inet static
+#     address 192.168.88.2/24
+#     gateway 192.168.2.1
+
+sudo systemctl restart networking
+
+sudo ./netinstall-cli -r -a 192.168.88.1 mt/routeros-7.20-arm64.npk mt/container-7.20-arm64.npk mt/user-manager-7.20-arm64.npk mt/wifi-qcom-7.20-arm64.npk
+
+# connect to WAN port
+
+# now you can proceed to boot the device into EtherBoot mode (poweron the device while holding reset button until it stops blinking)
+```
+
+## update static DNS entries from DHCP
+
+```bash
+/system/script/add name=update-dns-from-dhcp policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive source="
+:local domain ".aperture.ad";
+:local leases [/ip dhcp-server lease find dynamic=yes];
+
+:foreach i in=[/ip dns static find where name~$domain] do={
+    /ip dns static remove $i;
+}
+
+:foreach i in=$leases do={
+    :local hostname [/ip dhcp-server lease get $i host-name];
+    :local address [/ip dhcp-server lease get $i address];
+
+    :if ([:len $hostname] > 0) do={
+        :local fqdn ($hostname . $domain);
+        /ip dns static add name=$fqdn address=$address ttl=5m comment="From DHCP lease";
+    }
+}
+"
+
+/system scheduler add name=update-dns-from-dhcp interval=5m on-event="/system script run update-dns-from-dhcp"
 ```
