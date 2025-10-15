@@ -1,3 +1,51 @@
+## WG tunnel to LAN
+
+```bash
+/interface/wireguard/add listen-port=13231 name=wireguard1
+# this is the subnet that the client will "tunnel out of"
+# each client must have allowed-address from 192.168.100.1/24
+/ip/address/add address=192.168.100.1/24 interface=wireguard1
+
+# [admin@home] > /interface wireguard print 
+#     Flags: X - disabled; R - running 
+#      0  R name="wireguard1" mtu=1420 listen-port=11111 private-key="SERVER_PRIVATE_KEY"
+#           public-key="SERVER_PUBLIC_KEY"
+
+/interface/wireguard/peers/add allowed-address=192.168.100.2/32 interface=wireguard1 public-key="CLIENT_PUBLIC_KEY"
+
+/ip/firewall/filter/add action=accept chain=input comment="allow WireGuard" dst-port=11111 protocol=udp place-before=1
+/interface/list/member/add interface=wireguard1 list=LAN
+
+/ip/firewall/nat/add action=src-nat chain=srcnat src-address=192.168.100.0/24 to-addresses=192.168.88.1
+```
+
+Connect from debian:
+
+```bash
+wg genkey | sudo tee /etc/wireguard/private.key
+sudo cat /etc/wireguard/private.key | wg pubkey | sudo tee /etc/wireguard/public.key
+
+sudo nvim /etc/wireguard/wg0.conf
+# [Interface]
+# PrivateKey = CLIENT_PUBLIC_KEY
+# # this clients address on the destination device
+# Address = 192.168.100.2/32
+# DNS = 192.168.100.1
+# 
+# [Peer]
+# PublicKey = SERVER_PUBLIC_KEY
+# # defines which dst-address will go through the tunnel
+# # example: AllowedIPs = 0.0.0.0/0
+# AllowedIPs = 192.168.100.0/24, 192.168.88.0/24
+# Endpoint = xxx.xxx.xxx.xxx:11111
+
+# or nm-connection-editor
+sudo nmcli connection import type wireguard file /etc/wireguard/wg0.conf
+nmcli connection
+# or using wg-quick
+wg-quick up wg0
+```
+
 ## prevent ARP spoofing
 
 ```bash
@@ -44,7 +92,7 @@ VLAN switching:
 ```bash
 # {https://forum.mikrotik.com/viewtopic.php?t=180903}
 # add bridge for vlan switching (a single bridge should be used generaly (if multiple bridges are used - bringing will not be able to be hardware-offloaded (i.e. more CPU load)))
-/interface/bridge/add name=vlan-br-1 vlan-filtering=yes # WARNING!!! if you're connected to router remotely FIRST OMIT vlan-filtering option, sinse it will break the connection (???)
+/interface/bridge/add name=vlan-br-1 vlan-filtering=yes # WARNING!!! if you're connected to router remotely FIRST OMIT vlan-filtering option, since it will break the connection
 # priority=0x5000 - possible if you wanna adjust STP (or MSTP/RSTP) priority value (the lower the priority the more chance it'll become the root bridge)
 # frame-types=admit-only-vlan-tagged - POSSIBLE, BUT DANGEROUS
 
@@ -220,7 +268,6 @@ Clients now can set an address on upstream interfaces (that're connected to your
 /ip address add address=192.168.0.3/24 interface=ether1
 /ip address add address=192.168.1.3/24 interface=ether2
 
-# router-id 1.0.0.{host-num}. migrate to loopback ???
 /routing ospf instance add name=ospfv2-inst version=2 router-id=10.0.0.4
 # area-id is usually, 0.0.0.0, 1.1.1.1, 2.2.2.2, etc.
 /routing ospf area add name=ospfv2-a0 area-id=0.0.0.0 instance=ospfv2-inst
