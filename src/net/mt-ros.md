@@ -11,7 +11,7 @@
 #      0  R name="wireguard1" mtu=1420 listen-port=11111 private-key="SERVER_PRIVATE_KEY"
 #           public-key="SERVER_PUBLIC_KEY"
 
-/interface/wireguard/peers/add allowed-address=192.168.100.2/32 interface=wireguard1 public-key="CLIENT_PUBLIC_KEY"
+/interface/wireguard/peers/add allowed-address=192.168.100.2/32 interface=wireguard1 public-key="CLIENT_PUBLIC_KEY" preshared-key="PEER_PSK"
 
 /ip/firewall/filter/add action=accept chain=input comment="allow WireGuard" dst-port=11111 protocol=udp place-before=1
 /interface/list/member/add interface=wireguard1 list=LAN
@@ -24,6 +24,7 @@ Connect from debian:
 ```bash
 wg genkey | sudo tee /etc/wireguard/private.key
 sudo cat /etc/wireguard/private.key | wg pubkey | sudo tee /etc/wireguard/public.key
+wg genkey | sudo tee /etc/wireguard/preshared.key
 
 sudo nvim /etc/wireguard/wg0.conf
 # [Interface]
@@ -33,6 +34,7 @@ sudo nvim /etc/wireguard/wg0.conf
 # DNS = 192.168.100.1
 # 
 # [Peer]
+# PresharedKey = PEER_PSK
 # PublicKey = SERVER_PUBLIC_KEY
 # # defines which dst-address will go through the tunnel
 # # example: AllowedIPs = 0.0.0.0/0
