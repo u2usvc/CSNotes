@@ -1,5 +1,13 @@
 # Crypto
 
+## openssl
+
+### generate certificate with SAN for Proxmox
+
+```bash
+openssl req -new -newkey rsa:2048 -nodes -keyout pve.key -out pve.csr -subj "/OU=PVE Cluster Node/O=Proxmox Virtual Environment/CN=pve.aperture.ad" -addext "subjectAltName=DNS:pve.aperture.ad,DNS:192.168.88.69,DNS:127.0.0.1,DNS:0000:0000:0000:0000:0000:0000:0000:0001,DNS:localhost,DNS:pve" && openssl x509 -req -in pve.csr -CA k8s-aperture-root-ca.crt -CAkey k8s-aperture-root-ca.key -CAcreateserial -out pve.crt -days 365 -sha256 -extfile <(printf "subjectAltName=DNS:pve.aperture.ad,DNS:192.168.88.69,DNS:127.0.0.1,DNS:0000:0000:0000:0000:0000:0000:0000:0001,DNS:localhost,DNS:pve")
+```
+
 ## gpg
 
 ```bash
