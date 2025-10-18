@@ -8,7 +8,7 @@ kubectl get namespace $NAMESPACE -o json > ns.json
 nvim ns.json
 # "finalizers": []
 
-kubectl replace --raw "/api/v1/namespaces/nextcloud/finalize" -f ./ns.json
+kubectl replace --raw "/api/v1/namespaces/$NAMESPACE/finalize" -f ./ns.json
 ```
 
 # Quickstart with FCOS
