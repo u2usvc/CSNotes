@@ -1,3 +1,50 @@
+# debian
+
+## apply patch to a package (samba example)
+
+make sure deb-src repos are enabled in /etc/apt/sources.list
+
+```bash
+# install build utils and samba build deps
+sudo apt install -y devscripts build-essential dpkg-dev quilt fakeroot
+sudo apt build-dep -y samba
+
+# download samba source (creates a directory samba-<version>)
+apt-get source samba
+
+cat > /tmp/libsmbclient-fix.patch <<'PATCH'
+YOUR PATCH HERE
+PATCH
+
+cd samba-4.22.4+dfsg
+
+# dry-run apply to ensure patch will apply
+patch -p0 --dry-run < /tmp/libsmbclient-fix.patch
+
+# apply
+patch -p0 < /tmp/libsmbclient-fix.patch
+
+# build
+dpkg-buildpackage -us -uc -b
+
+# install new packages (.deb files will appear in the parent dir)
+cd ..
+sudo dpkg -i *.deb
+
+# if dpkg reports missing deps, fix them:
+sudo apt -f install
+```
+
+## install nerd fonts
+
+```bash
+wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip \
+&& cd ~/.local/share/fonts \
+&& unzip JetBrainsMono.zip \
+&& rm JetBrainsMono.zip \
+&& fc-cache -fv
+```
+
 # qubes
 
 ## copy file to dom0
