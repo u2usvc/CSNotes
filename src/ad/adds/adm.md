@@ -1,5 +1,19 @@
 # samba
 
+## krb5 mount
+
+```bash
+id -u john.doe
+id -g john.doe
+
+sudo vi /etc/fstab
+# //truenas.dmnt.ad/Music  /home/john.doe@dmnt.ad/music  cifs  sec=krb5,cruid=john.doe@dmnt.ad,vers=3.0  0  0
+
+sudo systemctl daemon-reload
+
+mount ~/music
+```
+
 ## samba DC on debian quickstart
 
 ```bash
@@ -37,5 +51,3 @@ sudo reboot
 sudo apt install smbclient
 sudo smbclient -L localhost -N
 ```
-
-# FreeIPA
