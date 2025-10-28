@@ -3,7 +3,6 @@ authors = ["u2usvc"]
 language = "en"
 src = "src"
 title = "cs-notes"
-create-missing = false
 
 [output.html]
 git-repository-url = "https://github.com/u2usvc/cs-notes"
