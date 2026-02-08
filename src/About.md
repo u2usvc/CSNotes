@@ -9,7 +9,6 @@ Because of this I've decided to create this repository to document tested techni
 ### Structure
 
 - `src/` - mdbook sources (`.md`)
-- `app/` - for applicable code blocks that are too small to create a separate project for, but too big to include into `src/`
 
 ### Development
 

