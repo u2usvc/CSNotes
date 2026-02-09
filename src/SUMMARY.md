@@ -21,4 +21,20 @@
 
 # K8s
 
-- [Admin](cloud/k8s/adm.md)
+- [Troubleshooting](devops/k8s/troubleshoot.md)
+- [Recon](devops/k8s/recon.md)
+- [Helm](devops/k8s/helm.md)
+- [CRI](devops/k8s/cri.md)
+- [General](devops/k8s/general.md)
+- [Talos](devops/k8s/talos.md)
+- [Third-party]()
+  - [CSI](devops/k8s/third_party/csi.md)
+  - [Service Mesh](devops/k8s/third_party/svc_mesh.md)
+  - [Load Balancers](devops/k8s/third_party/load_balancers.md)
+  - [Cert Managers](devops/k8s/third_party/cert_managers.md)
+  - [GitOps](devops/k8s/third_party/gitops.md)
+  - [Monitoring](devops/k8s/third_party/monitoring.md)
+  - [CD](devops/k8s/third_party/cd.md)
+  - [IdP](devops/k8s/third_party/idp.md)
+  - [Registry](devops/k8s/third_party/registry.md)
+  - [Secrets Managers](devops/k8s/third_party/secrets.md)
