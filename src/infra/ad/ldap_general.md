@@ -2,6 +2,15 @@
 
 ## BH
 
+### Resources
+
+- BH collector for SCCM: <https://specterops.io/blog/2026/01/13/introducing-configmanbearpig-a-bloodhound-opengraph-collector-for-sccm/?utm_campaign=Social_Twitter_2026_01_13_ConfigManBearPig&utm_medium=Organic%20Social&utm_source=Twitter&Latest_Campaign=701Uw00000dtnUg>
+- schedule task enumeration in BH: <https://github.com/1r0BIT/TaskHound>
+- BH collector for user profiles stored on domain machines: <https://github.com/m4lwhere/profilehound>
+- BH collector for GCP: <https://github.com/F41zK4r1m/GCP-Hound>
+
+- cypher cheatsheet: <https://queries.specterops.io/>
+
 ### bloodhound-python
 
 ```bash
