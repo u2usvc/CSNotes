@@ -14,5 +14,7 @@
 - [Roasting](infra/ad/roast.md)
 - [Tickets](infra/ad/ticket.md)
 - [LDAP general](infra/ad/ldap_general.md)
+- [Replication](infra/ad/replication.md)
+- [Persistence](infra/ad/persistence,md)
 
 ---
