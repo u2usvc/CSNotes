@@ -10,5 +10,6 @@
 # AD
 
 - [ADCS](infra/ad/adcs.md)
+- [Delegation](infra/ad/delegation.md)
 
 ---
