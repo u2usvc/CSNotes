@@ -1,6 +1,8 @@
 # Cred Usage
 
-## convert ccache to kirbi
+## Misc
+
+### convert ccache to kirbi
 
 ```bash
 # convert ticket to kirbi for Rubeus or mimikatz
