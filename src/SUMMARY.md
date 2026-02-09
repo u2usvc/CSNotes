@@ -2,8 +2,7 @@
 
 # NET
 
-- [NET CLI]()
-  - [MikroTik RouterOS](net/net_cli/mt_ros.md)
+- [MikroTik RouterOS](net/net_cli/mt_ros.md)
 
 ---
 
