@@ -40,7 +40,7 @@ impacket-getST -spn 'HOST/WIN-NUU0DPB1BVC' -impersonate 'Administrator' -dc-ip 1
 
 - victim - account which privileges we'd relay (e.g. DA)
 - desired service - service account to which we'd relay victim's auth
-- infected account, either fake (newly created specifically for the attack) or owned by an attacker machine (???) account
+- infected account, either fake (newly created specifically for the attack) or owned by an attacker
 
 1. Desired service account should have an msDS-AllowedToActOnBehalfOfOtherIdentity attribute featuring a infected account's SPN. (You should be able to create fake machine account (if you do NOT already own one!) and modify target service's attributes (if it DOESN'T feature your owned account already!)) (not default)
 2. The victim should be not in "Protected Users" group. (default)

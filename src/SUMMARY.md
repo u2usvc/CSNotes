@@ -11,5 +11,8 @@
 
 - [ADCS](infra/ad/adcs.md)
 - [Delegation](infra/ad/delegation.md)
+- [Cred Usage](infra/ad/pass_the.md)
+- [Roasting](infra/ad/roast.md)
+- [Tickets](infra/ad/ticket.md)
 
 ---
