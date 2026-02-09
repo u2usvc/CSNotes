@@ -21,8 +21,12 @@
 
 # K8s
 
-- [Troubleshooting](devops/k8s/troubleshoot.md)
 - [Recon](devops/k8s/recon.md)
+- [Execution](devops/k8s/exec.md)
+- [PrivEsc](devops/k8s/privesc.md)
+- [Persistence](devops/k8s/persist.md)
+- [Cred Usage](devops/k8s/cred_use.md)
+- [Troubleshooting](devops/k8s/troubleshoot.md)
 - [Helm](devops/k8s/helm.md)
 - [CRI](devops/k8s/cri.md)
 - [General](devops/k8s/general.md)
