@@ -18,3 +18,7 @@
 - [Persistence](infra/ad/persistence.md)
 
 ---
+
+# K8s
+
+- [Admin](cloud/k8s/adm.md)
