@@ -48,5 +48,5 @@
 # Wireless
 
 - [RF](wireless/rf.md)
-- [Cellular](wireless/cell.md)
+- [Cellular](wireless/cellular.md)
 - [WiFi](wireless/wifi.md)
