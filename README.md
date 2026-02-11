@@ -2,14 +2,9 @@
 
 ### Introduction
 
-Usually documentation (if any) of certain utilities and applications is all over the place and, there is no indication whether certain information has higher priority and is used more often. Furthermore, when you attempt to use the technology, it often fails to work as described under the given conditions.
+Usually documentation (if any) of certain utilities and applications is too verbose and there is no indication whether certain information has higher priority and/or is used more often. Furthermore, when you attempt to use the technology, it often fails to work as described under the given conditions.
 
 Because of this I've decided to create this repository to document tested techniques and practical usage examples for different types of technology I come across in a form of quick references.
-
-### Structure
-
-- `src/` - mdbook sources (`.md`)
-- `app/` - for applicable code blocks that are too small to create a separate project for, but too big to include into `src/`
 
 ### Development
 
