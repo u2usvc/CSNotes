@@ -45,8 +45,9 @@
 
 ---
 
-# Wireless
+# RF/HW
 
 - [RF](wireless/rf.md)
 - [Cellular](wireless/cellular.md)
 - [WiFi](wireless/wifi.md)
+- [Serial](hw/serial.md)
