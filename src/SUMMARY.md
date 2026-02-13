@@ -52,6 +52,8 @@
 - [WiFi](wireless/wifi.md)
 - [Serial](hw/serial.md)
 
+---
+
 # AI
 
 - [Applied](ai/applied.md)
