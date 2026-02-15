@@ -1,12 +1,12 @@
 - [ABOUT](About.md)
 
-# NET
+# net
 
 - [MikroTik RouterOS](net/net_cli/mt_ros.md)
 
 ---
 
-# AD
+# ad
 
 - [ADCS](infra/ad/adcs.md)
 - [Delegation](infra/ad/delegation.md)
@@ -19,7 +19,7 @@
 
 ---
 
-# K8s
+# k8s
 
 - [Recon](devops/k8s/recon.md)
 - [Execution](devops/k8s/exec.md)
@@ -45,7 +45,13 @@
 
 ---
 
-# RF/HW
+# maldev
+
+- [Obfuscation](maldev/obfuscation.md)
+
+---
+
+# rf/hw
 
 - [RF](wireless/rf.md)
 - [Cellular](wireless/cellular.md)
@@ -54,6 +60,6 @@
 
 ---
 
-# AI
+# ai
 
 - [Applied](ai/applied.md)
