@@ -33,4 +33,6 @@ CMD ["/bin/bash"]
 ```bash
 sudo docker build -t obfuscator-llvm .
 sudo docker cp $CONTAINER_ID:/usr/src/build/bin ~/utils/ollvm/
+sudo docker cp $CONTAINER_ID:/usr/src/build/lib ~/utils/ollvm/
+sudo docker cp $CONTAINER_ID:/usr/src/build/include ~/utils/ollvm/
 ```
