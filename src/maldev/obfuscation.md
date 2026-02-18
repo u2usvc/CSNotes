@@ -67,7 +67,7 @@ sudo docker cp $CONTAINER_ID:/usr/src/build/include ~/utils/ollvm/
 ```bash
 docker pull egee/sgn
 ls ~/utils/shellcode.bin
-docker run -it -v ~/utils:/data egee/sgn /data/shellcode.bin
+docker run -it -v ~/utils:/data egee/sgn -a 64 /data/shellcode.bin
 ls ~/utils/shellcode.bin.sgn
 ```
 
