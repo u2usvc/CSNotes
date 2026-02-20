@@ -18,7 +18,7 @@ grab from here - [https://github.com/mossmann/hackrf](https://github.com/mossman
 
 ```bash
 # just run the following command and reconnect the board
-sudo hackrf_spiflash -w hackrf_one_usb.bin
+sudo hackrf_spiflash -w firmware-bin/hackrf_one_usb.bin
 
 # run to ensure firmware got flashed
 sudo hackrf_info
