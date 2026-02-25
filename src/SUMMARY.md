@@ -19,6 +19,12 @@
 
 ---
 
+# sys
+
+- [Persistence](infra/sys/persistence)
+
+---
+
 # k8s
 
 - [Recon](devops/k8s/recon.md)
