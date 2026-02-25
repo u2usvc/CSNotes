@@ -21,7 +21,7 @@
 
 # sys
 
-- [Persistence](infra/sys/persistence)
+- [Persistence](infra/sys/persistence.md)
 
 ---
 
