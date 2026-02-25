@@ -9,6 +9,7 @@
 - [DRP](net/drp.md)
 - [FHRP](net/fhrp.md)
 - [VLAN](net/vlan.md)
+- [BGP](net/bgp.md)
 - [MT ROS](net/net_cli/mt_ros.md)
 
 ---
