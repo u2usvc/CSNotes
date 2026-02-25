@@ -2,7 +2,14 @@
 
 # net
 
-- [MikroTik RouterOS](net/net_cli/mt_ros.md)
+- [VPLS](net/vpls.md)
+- [VXLAN](net/vxlan.md)
+- [Wireguard](net/wg.md)
+- [DNS](net/dns.md)
+- [DRP](net/drp.md)
+- [FHRP](net/fhrp.md)
+- [VLAN](net/vlan.md)
+- [MT ROS](net/net_cli/mt_ros.md)
 
 ---
 
