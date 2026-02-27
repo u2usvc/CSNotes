@@ -12,6 +12,17 @@ sudo hackrf_transfer -s 2000000 -f 315000000 -r unlock.rx
 sudo hackrf_transfer -s 2000000 -f 315000000 -t unlock.rx -x 47
 ```
 
+### Spectrum analysis
+
+hackrf_sweep can be manually called as follows:
+
+```bash
+hackrf_sweep -f 1800:1900 -r output.csv
+```
+
+QSpectrumAnalyzer is more convenient to use. `File -> Settings -> Backend == hackrf_sweep` to use `hackrf_sweep`.
+Tested on hackrf FW `2024.02.1`
+
 ### flash
 
 grab from here - [https://github.com/mossmann/hackrf](https://github.com/mossmann/hackrf)
