@@ -3,7 +3,7 @@
 ## MT ROS setup
 
 ```bash
-#### customer routert
+#### customer router
 ### on customer's side you CAN also configure VLANs to separate traffic
 
 ### R1 (IP : 10.0.0.1)
