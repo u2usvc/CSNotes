@@ -131,6 +131,77 @@ initContainers:
     name: data
 ```
 
+Add authentik:
+
+```yaml
+# authentik-values.yaml
+
+authentik:
+  secret_key: "$KEY"
+  # This sends anonymous usage-data, stack traces on errors and
+  # performance data to sentry.io, and is fully opt-in
+  error_reporting:
+    enabled: true
+  postgresql:
+    password: "$PASSWD"
+
+postgresql:
+  enabled: true
+  auth:
+    password: "$PASSWD"
+redis:
+  enabled: true
+```
+
+```bash
+helm upgrade --install authentik authentik/authentik \
+--namespace authentik --create-namespace \
+-f authentik-values.yaml
+```
+
+```bash
+kubectl -n authentik logs authentik-postgresql-0
+# mkdir: cannot create directory ‘/bitnami/postgresql/data’: Permission denied
+
+EDITOR=nvim kubectl -n authentik edit statefulset authentik-postgresql
+# initContainers:
+# - command:
+#   - /bin/sh
+#   - -c
+#   - |
+#     id
+#     ls -la /bitnami/postgresql
+#     chown -R 1001:1001 /bitnami/postgresql
+#   image: alpine:latest
+#   imagePullPolicy: Always
+#   name: fix-volume-permissions
+#   resources: {}
+#   securityContext:
+#     runAsGroup: 0
+#     runAsUser: 0
+#   terminationMessagePath: /dev/termination-log
+#   terminationMessagePolicy: File
+#   volumeMounts:
+#   - mountPath: /bitnami/postgresql
+#     name: data
+```
+
+Now rollout restart all deployments and statefulsets
+
+Test
+
+```bash
+kubectl -n test get svc
+# NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+# postgresql      ClusterIP   10.104.111.175   <none>        5432/TCP   41s
+# postgresql-hl   ClusterIP   None             <none>        5432/TCP   41s
+
+> kubectl -n authentik port-forward svc/authentik-server 9596:80
+# Forwarding from 127.0.0.1:9596 -> 9000
+# Forwarding from [::1]:9596 -> 9000
+# Handling connection for 9596
+```
+
 ## prevent namespace stuck in terminating
 
 ```bash
