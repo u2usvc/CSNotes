@@ -1,8 +1,10 @@
-# Service Mesh
+# Ingress
 
-## Istio
+## Service Mesh
 
-### Gitea setup
+### Istio
+
+#### Gitea setup
 
 deploy gitea:
 [https://gitea.com/gitea/helm-gitea#persistence](https://gitea.com/gitea/helm-gitea#persistence), [https://gitea.com/gitea/helm-gitea/src/branch/main/values.yaml](https://gitea.com/gitea/helm-gitea/src/branch/main/values.yaml)
@@ -107,9 +109,9 @@ cat /etc/hosts
 # 192.168.88.243 gitea.aperture.ad
 ```
 
-### Kiali
+#### Kiali
 
-#### Setup
+##### Setup
 
 ```bash
 cd istio/

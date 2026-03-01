@@ -196,7 +196,7 @@ kubectl -n test get svc
 # postgresql      ClusterIP   10.104.111.175   <none>        5432/TCP   41s
 # postgresql-hl   ClusterIP   None             <none>        5432/TCP   41s
 
-> kubectl -n authentik port-forward svc/authentik-server 9596:80
+kubectl -n authentik port-forward svc/authentik-server 9596:80
 # Forwarding from 127.0.0.1:9596 -> 9000
 # Forwarding from [::1]:9596 -> 9000
 # Handling connection for 9596

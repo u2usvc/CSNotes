@@ -10,7 +10,15 @@
 - [FHRP](net/fhrp.md)
 - [VLAN](net/vlan.md)
 - [BGP](net/bgp.md)
+- [ARP](net/arp.md)
 - [MT ROS](net/net_cli/mt_ros.md)
+- [Libvirt](net/libvirt.md)
+
+---
+
+# svc
+
+- [sshd](infra/svc/sshd.md)
 
 ---
 
@@ -47,7 +55,7 @@
 - [Talos](devops/k8s/talos.md)
 - [Third-party]()
   - [CSI](devops/k8s/third_party/csi.md)
-  - [Service Mesh](devops/k8s/third_party/svc_mesh.md)
+  - [Service Mesh](devops/k8s/third_party/ingress.md)
   - [Load Balancers](devops/k8s/third_party/load_balancers.md)
   - [Cert Managers](devops/k8s/third_party/cert_managers.md)
   - [GitOps](devops/k8s/third_party/gitops.md)
@@ -71,6 +79,25 @@
 - [Cellular](wireless/cellular.md)
 - [WiFi](wireless/wifi.md)
 - [Serial](hw/serial.md)
+- [UEFI](hw/uefi.md)
+
+---
+
+# web2
+
+- [Recon](web2/recon.md)
+
+---
+
+# crypto
+
+- [Hashcracking](crypto/hashcracking.md)
+
+---
+
+# bin
+
+- [FW RE](bin/fw.md)
 
 ---
 
