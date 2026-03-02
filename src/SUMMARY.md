@@ -98,6 +98,8 @@
 # bin
 
 - [FW RE](bin/fw.md)
+- [RE](bin/re.md)
+- [BinExp](bin/binexp.md)
 
 ---
 
