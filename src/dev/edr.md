@@ -13,6 +13,3 @@
 
 - EDR-Redir: <https://www.zerosalarium.com/2025/11/EDR-Redir-V2-Blind-EDR-With-Fake-Program-Files.html?m=1>, <https://ipurple.team/2025/12/01/bind-link-edr-tampering/>
 - EDRStartupHinder: <https://www.zerosalarium.com/2026/01/edrstartuphinder-edr-startup-process-blocker.html?m=1>
-
-- EDR-Redir: <https://www.zerosalarium.com/2025/11/EDR-Redir-V2-Blind-EDR-With-Fake-Program-Files.html?m=1>, <https://ipurple.team/2025/12/01/bind-link-edr-tampering/>
-- EDRStartupHinder: <https://www.zerosalarium.com/2026/01/edrstartuphinder-edr-startup-process-blocker.html?m=1>
