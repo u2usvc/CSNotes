@@ -1,5 +1,16 @@
 # gitd
 
+## add post-receive hook to a repo
+
+1. place a hook under `/var/git/MY_PROJECT.git/hooks/post-receive`
+2. make it executable
+3. give `git` user sudo access to necessary commands:
+
+```bash
+# /etc/sudoers.d/git
+git ALL=(ALL) NOPASSWD: /bin/systemctl is-active, /usr/bin/docker, /usr/bin/docker-compose
+```
+
 ## quickstart
 
 ```bash

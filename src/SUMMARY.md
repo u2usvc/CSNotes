@@ -71,7 +71,7 @@
 
 # dev
 
-- [IDE & git]()
+- [IDE & git](dev/ide.md)
 - [Obfuscation](dev/obfuscation.md)
 - [vs EDR](dev/edr.md)
 - [Runtime obfuscation](dev/runtime_obfuscation.md)
