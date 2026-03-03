@@ -1,4 +1,4 @@
-# Data poisoning
+# Data manipulation
 
 ## Abliteration uncensoring
 

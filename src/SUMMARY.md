@@ -70,6 +70,8 @@
 # maldev
 
 - [Obfuscation](maldev/obfuscation.md)
+- [vs EDR](maldev/edr.md)
+- [Runtime obfuscation](maldev/runtime_obfuscation.md)
 
 ---
 
@@ -106,3 +108,4 @@
 # ai
 
 - [Applied](ai/applied.md)
+- [Data manipulation](ml/dm.md)
