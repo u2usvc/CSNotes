@@ -16,7 +16,7 @@
 
 ---
 
-# svc
+# infra svc
 
 - [sshd](infra/svc/sshd.md)
 
@@ -54,7 +54,7 @@
 - [General](devops/k8s/general.md)
 - [Talos](devops/k8s/talos.md)
 
-# k8s third-party
+# k8s svc
 
 - [CSI](devops/k8s/third_party/csi.md)
 - [Service Mesh](devops/k8s/third_party/ingress.md)
@@ -69,11 +69,12 @@
 
 ---
 
-# maldev
+# dev
 
-- [Obfuscation](maldev/obfuscation.md)
-- [vs EDR](maldev/edr.md)
-- [Runtime obfuscation](maldev/runtime_obfuscation.md)
+- [IDE & git]()
+- [Obfuscation](dev/obfuscation.md)
+- [vs EDR](dev/edr.md)
+- [Runtime obfuscation](dev/runtime_obfuscation.md)
 
 ---
 
