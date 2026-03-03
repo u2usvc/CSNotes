@@ -16,6 +16,9 @@ db esp L200
 
 # dissasemble the function `GetCurrentThread` in `kernel32` DLL
 u kernel32!GetCurrentThread
+
+# show registers
+r
 ```
 
 #### display security descriptor at address
@@ -86,6 +89,35 @@ x ntdll!NtTraceEvent
 
 # dissasemble the function
 uf ntdll!NtTraceEvent
+```
+
+#### set conditional breakpoint when a certain value gets pushed into register
+
+In order to stop when `x00007ffcf3fa56f0` is pushed to `RCX` during a function execution:
+
+Find the function offset. According to ghidra, function relative address is at `140004be1` (relative to image base)
+In order to set the breakpoint on a function you need to determine the relative address of this function relative to the module base (in our case the module is the executable itself).
+
+
+Function VA (relative address) in ghidra is `140004be1`, however in ghidra image base is different. For an x64 PE the default image base is `0x140000000`, and it is the one set in ghidra.
+
+Display image base in ghidra: `Window -> Memory map -> Set Image Base (house icon)`
+
+Display image base in windbg:
+
+```bash
+0:000> !dh executable_name -f
+# 00007ff7a3a10000 image base
+```
+
+Now you must compute an RVA by subtracting image base from VA:
+
+```
+140004be1 - 140000000 = 0x4be1
+```
+
+```bash
+bp executable_name+0x4be1 "j (@rcx == 0x00007ffcf3fa56f0) ''; 'gc'"
 ```
 
 #### windows driver debugging setup

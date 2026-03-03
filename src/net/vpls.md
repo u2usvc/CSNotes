@@ -18,7 +18,7 @@
 
 # R2 (IP : 10.0.0.2)
 /interface/bridge/add name=vpls-tun-1
-/interface/vpls/add name=vpls-tun-3-4 vpls-id=1:102 peer=10.0.0.2
+/interface/vpls/add name=vpls-tun-4-3 vpls-id=1:102 peer=10.0.0.1
 /interface/bridge/port/add interface=vpls-tun-4-3 bridge=vpls-tun-1
 /interface/bridge/port/add interface=ether4 bridge=vpls-tun-1
 
