@@ -38,6 +38,7 @@
 # sys
 
 - [Persistence](infra/sys/persistence.md)
+- [UAC](infra/sys/uac.md)
 
 ---
 
