@@ -17,3 +17,6 @@
 
 <https://github.com/NtDallas/Draugr>
 <https://github.com/HulkOperator/Spoof-RetAddr>
+
+- rust: <https://github.com/joaoviictorti/uwd>
+- <https://github.com/rasta-mouse/GadgetHunter>
