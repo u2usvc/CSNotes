@@ -1,8 +1,8 @@
 # RF
 
-## HackRF
+## Replay
 
-### Replay
+### HackRF
 
 ```bash
 # capture on 315'000.000kHz (315.000 MHz) and save to a file called "unlock.rx" and sample rate of 2'000.000 kHz (2 MHz)
@@ -12,7 +12,13 @@ sudo hackrf_transfer -s 2000000 -f 315000000 -r unlock.rx
 sudo hackrf_transfer -s 2000000 -f 315000000 -t unlock.rx -x 47
 ```
 
-### Spectrum analysis
+## Spectrum analysis
+
+### General
+
+- <http://kiwisdr.com/.public/>
+
+### HackRF
 
 hackrf_sweep can be manually called as follows:
 
@@ -23,7 +29,11 @@ hackrf_sweep -f 1800:1900 -r output.csv
 QSpectrumAnalyzer is more convenient to use. `File -> Settings -> Backend == hackrf_sweep` to use `hackrf_sweep`.
 Tested on hackrf FW `2024.02.1`
 
-### flash
+## Utils
+
+### HackRF
+
+#### flash
 
 grab from here - [https://github.com/mossmann/hackrf](https://github.com/mossmann/hackrf)
 
