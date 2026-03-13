@@ -39,6 +39,7 @@
 
 - [Persistence](infra/sys/persistence.md)
 - [UAC](infra/sys/uac.md)
+- [Android](infra/sys/android.md)
 
 ---
 
@@ -82,6 +83,7 @@
 # rf/hw
 
 - [RF](wireless/rf.md)
+- [Dump](hw/dump.md)
 - [Cellular](wireless/cellular.md)
 - [WiFi](wireless/wifi.md)
 - [Serial](hw/serial.md)
