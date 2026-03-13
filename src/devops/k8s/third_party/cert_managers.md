@@ -89,6 +89,44 @@ sudo update-ca-certificates
 # additionally, import this CA into your browser
 ```
 
+### make cert-manager use custom self-signed CA
+
+```bash
+openssl genrsa -out rootCA.key 4096
+
+openssl req -x509 -new -nodes \
+-key rootCA.key \
+-sha256 \
+-days 3650 \
+-out rootCA.crt \
+-subj "/CN=Aperture Internal CA/O=Aperture Inc"
+
+kubectl create secret generic internal-ca-key-pair -n cert-manager \
+--from-file=tls.crt=aperture-ca-ng.crt \
+--from-file=tls.key=aperture-ca-ng.key \
+--from-file=ca.crt=aperture-ca-ng.crt \
+--dry-run=client -o yaml | kubectl apply -f -
+
+# renew all
+kubectl get certificate --all-namespaces -o jsonpath='{range .items[?(@.spec.issuerRef.name=="internal-ca-issuer")]}{.metadata.namespace}{" "}{.metadata.name}{"\n"}{end}' | \
+while read ns name; do
+  echo "Renewing $ns/$name..."
+  cmctl renew "$name" -n "$ns"
+done
+
+# restart
+kubectl rollout restart deployment istio-ingressgateway -n istio-system
+```
+
+```yaml
+kind: ClusterIssuer
+# ...
+spec:
+  ca:
+    secretName: internal-ca-key-pair
+# ...
+```
+
 ### trust-manager
 
 #### Usage example

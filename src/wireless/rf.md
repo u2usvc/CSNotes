@@ -19,6 +19,10 @@ sudo hackrf_transfer -s 2000000 -f 315000000 -r unlock.rx
 sudo hackrf_transfer -s 2000000 -f 315000000 -t unlock.rx -x 47
 ```
 
+## Resources
+
+- <https://www.sigidwiki.com/>
+
 ## Spectrum analysis
 
 ### General
