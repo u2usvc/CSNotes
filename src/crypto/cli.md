@@ -49,6 +49,15 @@ Retrieves public key address from .sig file and fetches it from the remote serve
 gpg --keyserver-options auto-key-retrieve --verify Downloads/archlinux-2023.09.01-x86_64.iso.sig Documents/archlinux-2023.09.01-x86_64.iso
 ```
 
+## openssl
+
+### generate certificate with SAN for Proxmox
+
+```bash
+openssl req -new -newkey rsa:2048 -nodes -keyout pve.key -out pve.csr -subj "/OU=PVE Cluster Node/O=Proxmox Virtual Environment/CN=pve.aperture.ad" -addext "subjectAltName=DNS:pve.aperture.ad,DNS:127.0.0.1,DNS:localhost,DNS:pve,DNS:192.168.88.69" && openssl x509 -req -in pve.csr -CA k8s-aperture-root-ca-01.crt -CAkey k8s-aperture-root-ca-01.key -CAcreateserial -out pve.crt -days 365 -sha256 -extfile <(printf "subjectAltName=DNS:pve.aperture.ad,DNS:127.0.0.1,DNS:localhost,DNS:pve,DNS:192.168.88.69")
+
+```
+
 ## pass
 
 ### usage
