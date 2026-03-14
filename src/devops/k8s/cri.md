@@ -33,6 +33,22 @@ cilium install --namespace kube-system \
 --set cgroup.hostRoot=/sys/fs/cgroup \
 --set cni.exclusive=false
 
+kubectl rollout restart ds cilium -n kube-system
+
 cilium status --wait
 # wait until it's OK
+```
+
+### inter-node traffic encryption via Wireguard
+
+```bash
+cilium upgrade --namespace kube-system \
+--reuse-values \
+--set encryption.enabled=true \
+--set encryption.type=wireguard \
+
+kubectl rollout status daemonset/cilium -n kube-system
+
+cilium encryption status
+# Encryption: Wireguard (4/4 nodes)
 ```
