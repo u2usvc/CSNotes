@@ -45,9 +45,9 @@ cilium status --wait
 cilium upgrade --namespace kube-system \
 --reuse-values \
 --set encryption.enabled=true \
---set encryption.type=wireguard \
+--set encryption.type=wireguard
 
-kubectl rollout status daemonset/cilium -n kube-system
+kubectl rollout restart daemonset/cilium -n kube-system
 
 cilium encryption status
 # Encryption: Wireguard (4/4 nodes)
