@@ -19,6 +19,7 @@
 # infra svc
 
 - [sshd](infra/svc/sshd.md)
+- [gitd](infra/svc/gitd.md)
 
 ---
 

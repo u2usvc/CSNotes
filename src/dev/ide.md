@@ -2,6 +2,12 @@
 
 ## git
 
+### add global gitignore file
+
+```bash
+git config --global core.excludesFile ~/.gitignore_global && echo "fileiwanttoignore.txt" >> ~/.gitignore_global
+```
+
 ### ambigious fix
 
 ```bash
