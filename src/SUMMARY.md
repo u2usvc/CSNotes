@@ -41,6 +41,8 @@
 - [Persistence](infra/sys/persistence.md)
 - [UAC](infra/sys/uac.md)
 - [Android](infra/sys/android.md)
+- [Linux graphics](infra/sys/lin_graphics.md)
+- [Linux misc](infra/sys/lin_misc.md)
 
 ---
 
