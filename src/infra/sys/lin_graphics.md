@@ -11,3 +11,11 @@ wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/do
 && rm JetBrainsMono.zip \
 && fc-cache -fv
 ```
+
+## wayland
+
+### flameshot alternative for sway
+
+```bash
+bindsym Print exec grim -g "$(slurp)" - | swappy -f -
+```
