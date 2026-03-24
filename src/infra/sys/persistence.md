@@ -68,3 +68,10 @@ sudo adduser xrdp ssl-cert
 sudo systemctl restart xrdp
 # now logout from desktop and use remmina to remotely connect
 ```
+
+For ubuntu 24.04:
+
+```bash
+sudo apt install xfce4
+echo "xfce-session" > ~/.xsession
+```
