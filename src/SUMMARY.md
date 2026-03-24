@@ -20,6 +20,7 @@
 
 - [sshd](infra/svc/sshd.md)
 - [gitd](infra/svc/gitd.md)
+- [SIEM](infra/svc/siem,md)
 
 ---
 
