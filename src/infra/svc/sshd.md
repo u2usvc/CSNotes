@@ -57,7 +57,6 @@ sudo systemctl enable unattended-upgrades
 
 # observe
 cat /var/log/unattended-upgrades/unattended-upgrades.log
-
 ```
 
 5. Setup port knocking
