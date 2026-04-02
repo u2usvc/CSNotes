@@ -4,6 +4,8 @@
 
 ### MT ROS setup
 
+Assume this is done on AS65200 R03 with address `20.84.87.139`:
+
 ```bash
 # make router-id a local router loopback address (optional)
 # remote.as if not specified will be automatically determined
@@ -12,7 +14,7 @@
 /routing/bgp/session/print
 
 # eBGP functions now, but doesn't do anything
-# in order for you and your eBGP to actually learn some routers from the remote network you need to configure routers on both peers (e.g. on both AS') to contain the "output.network" setting.
+# in order for you and your eBGP to actually learn some routes from the remote network you need to configure routers on both peers (e.g. on both AS') to contain the "output.network" setting.
 /routing/bgp/connection/set numbers=0 output.network=bgp-65100-out
 /ip/firewall/address-list/add list=bgp-65100-out address=10.3.1.0/24
 /ip/firewall/address-list/add list=bgp-65100-out address=10.3.2.0/24
