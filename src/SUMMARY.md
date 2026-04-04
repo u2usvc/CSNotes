@@ -66,6 +66,7 @@
 - [Service Mesh](devops/k8s/third_party/ingress.md)
 - [Load Balancers](devops/k8s/third_party/load_balancers.md)
 - [Cert Managers](devops/k8s/third_party/cert_managers.md)
+- [Log management](devops/k8s/third_party/log_management.md)
 - [GitOps](devops/k8s/third_party/gitops.md)
 - [Monitoring](devops/k8s/third_party/monitoring.md)
 - [CD](devops/k8s/third_party/cd.md)
