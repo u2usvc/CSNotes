@@ -15,9 +15,20 @@ Assume this is done on AS65200 R03 with address `20.84.87.139`:
 
 # eBGP functions now, but doesn't do anything
 # in order for you and your eBGP to actually learn some routes from the remote network you need to configure routers on both peers (e.g. on both AS') to contain the "output.network" setting.
+# here it is assumed that 10.3.1.0/24 and 10.3.2.0/24 are ranges that are used on client's side
 /routing/bgp/connection/set numbers=0 output.network=bgp-65100-out
 /ip/firewall/address-list/add list=bgp-65100-out address=10.3.1.0/24
 /ip/firewall/address-list/add list=bgp-65100-out address=10.3.2.0/24
 # try to check /ip/route/print on the AS65100 router, you should learn routes you advertised here
 # now, mirror this config for the 2nd router (AS 65100) and set the required routes for it to advertise to the AS65200 router
+
+# add a blackhole route if this edge router doesn't know the client routes
+/ip/route/add dst-address=10.3.2.0/24 blackhole
+/ip/route/add dst-address=10.3.1.0/24 blackhole
+```
+
+Check if route was learned on a neighbor router
+
+```bash
+/ip/route/print detail
 ```
