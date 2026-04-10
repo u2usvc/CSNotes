@@ -30,7 +30,6 @@ docker push $REPO_URI/$PROJECT/$APP:latest
 kubectl create namespace harbor
 kubectl label namespace harbor istio-injection=enabled
 
-# make sure to use tun throne
 helm repo add harbor https://helm.goharbor.io
 
 helm upgrade --namespace harbor --install harbor harbor/harbor --set expose.type=clusterIP --set expose.clusterIP.name=harbor --set expose.tls.enabled=false --set externalURL=https://harbor.aperture.ad
