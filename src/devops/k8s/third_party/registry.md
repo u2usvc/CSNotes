@@ -2,6 +2,28 @@
 
 ## Harbor
 
+### Persistence
+
+```bash
+# Login to repo
+docker login $REPO_URI
+
+# Fetch an image
+docker pull $REPO_URI/$PROJECT/$APP:latest
+
+# Run and modify an image
+docker run -it $APP -- /bin/bash
+
+# Create a new image from a container
+docker container commit $CONTAINER_ID $IMAGE_NAME
+
+# Tag for repo
+docker tag $IMAGE_NAME $REPO_URI/$PROJECT/$APP:latest
+
+# Push to repo
+docker push $REPO_URI/$PROJECT/$APP:latest
+```
+
 ### Setup
 
 ```bash
