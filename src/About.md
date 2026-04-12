@@ -2,14 +2,12 @@
 
 ### Introduction
 
-Usually documentation (if any) of certain utilities and applications is too verbose and there is no indication whether certain information has higher priority and/or is used more often. Furthermore, when you attempt to use the technology, it often fails to work as described under the given conditions.
+This resource serves as a concise reference for practical utility usage patterns.
+It is not intended to be a guide or a documentation.
 
-Because of this I've decided to create this repository to document tested techniques and practical usage examples for different types of technology I come across in a form of quick references.
-
-### Development
-
-This is very far from being complete: I will be slowly populating this repository with content from my local notes, I have lots of things to share.
+This resource is currently under development.
 
 ## Legal disclaimer
 
-All content on this blog is intended solely for educational purposes, research, authorized assessments. The author assumes no responsibility for any misuse of the information provided.
+All content on this resource is provided for educational and research purposes only.
+The author is not responsible for any misuse of this information.

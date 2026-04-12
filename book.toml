@@ -2,13 +2,13 @@
 authors = ["u2usvc"]
 language = "en"
 src = "src"
-title = "cs-notes"
+title = "CSNotes"
 
 [output.html]
 git-repository-url = "https://github.com/u2usvc/cs-notes"
 # no-section-label = true
-default-theme = "coal"
-preferred-dark-theme = "coal"
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
 mathjax-support = true
 additional-css = ["custom.css"]
 
