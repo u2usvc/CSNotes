@@ -30,6 +30,7 @@
 - [Delegation](infra/ad/delegation.md)
 - [Cred Usage](infra/ad/pass_the.md)
 - [Roasting](infra/ad/roast.md)
+- [Admin](infra/ad/adm.md)
 - [Tickets](infra/ad/ticket.md)
 - [LDAP general](infra/ad/ldap_general.md)
 - [Replication](infra/ad/replication.md)
