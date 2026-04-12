@@ -76,19 +76,19 @@
   font-weight: 300;
 }
 
-.coal h1 a,
-.coal h2 a,
-.coal h3 a,
-.coal h4 a,
-.coal h5 a {
+.coal .content h1 a,
+.coal .content h2 a,
+.coal .content h3 a,
+.coal .content h4 a,
+.coal .content h5 a {
   font-family: "JetBrains Mono", "Lucida Console", monospace;
 }
 
-.coal h1::before { content: "#  "; color: var(--grey0); font-family: "JetBrains Mono", "Lucida Console", monospace; }
-.coal h2::before { content: "## "; color: var(--grey0); font-family: "JetBrains Mono", "Lucida Console", monospace; }
-.coal h3::before { content: "### "; color: var(--grey0); font-family: "JetBrains Mono", "Lucida Console", monospace; }
-.coal h4::before { content: "#### "; color: var(--grey0); font-family: "JetBrains Mono", "Lucida Console", monospace; }
-.coal h5::before { content: "##### "; color: var(--grey0); font-family: "JetBrains Mono", "Lucida Console", monospace; }
+.coal .content h1::before { content: "#  "; color: var(--grey0); font-family: "JetBrains Mono", "Lucida Console", monospace; }
+.coal .content h2::before { content: "## "; color: var(--grey0); font-family: "JetBrains Mono", "Lucida Console", monospace; }
+.coal .content h3::before { content: "### "; color: var(--grey0); font-family: "JetBrains Mono", "Lucida Console", monospace; }
+.coal .content h4::before { content: "#### "; color: var(--grey0); font-family: "JetBrains Mono", "Lucida Console", monospace; }
+.coal .content h5::before { content: "##### "; color: var(--grey0); font-family: "JetBrains Mono", "Lucida Console", monospace; }
 
 .ayu {
   --bg: #000000;
@@ -161,17 +161,17 @@
   font-weight: 300;
 }
 
-.ayu h1 a,
-.ayu h2 a,
-.ayu h3 a,
-.ayu h4 a,
-.ayu h5 a {
+.ayu .content h1 a,
+.ayu .content h2 a,
+.ayu .content h3 a,
+.ayu .content h4 a,
+.ayu .content h5 a {
   font-family: "JetBrains Mono", "Lucida Console", monospace;
 }
 
-.ayu h1::before { content: "#  "; color: #5c6773; font-family: "JetBrains Mono", "Lucida Console", monospace; }
-.ayu h2::before { content: "## "; color: #5c6773; font-family: "JetBrains Mono", "Lucida Console", monospace; }
-.ayu h3::before { content: "### "; color: #5c6773; font-family: "JetBrains Mono", "Lucida Console", monospace; }
-.ayu h4::before { content: "#### "; color: #5c6773; font-family: "JetBrains Mono", "Lucida Console", monospace; }
-.ayu h5::before { content: "##### "; color: #5c6773; font-family: "JetBrains Mono", "Lucida Console", monospace; }
+.ayu .content h1::before { content: "#  "; color: #5c6773; font-family: "JetBrains Mono", "Lucida Console", monospace; }
+.ayu .content h2::before { content: "## "; color: #5c6773; font-family: "JetBrains Mono", "Lucida Console", monospace; }
+.ayu .content h3::before { content: "### "; color: #5c6773; font-family: "JetBrains Mono", "Lucida Console", monospace; }
+.ayu .content h4::before { content: "#### "; color: #5c6773; font-family: "JetBrains Mono", "Lucida Console", monospace; }
+.ayu .content h5::before { content: "##### "; color: #5c6773; font-family: "JetBrains Mono", "Lucida Console", monospace; }
 

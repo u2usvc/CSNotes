@@ -2,7 +2,7 @@
 authors = ["u2usvc"]
 language = "en"
 src = "src"
-title = "CSNotes"
+# title = "CSNotes"
 
 [output.html]
 git-repository-url = "https://github.com/u2usvc/cs-notes"
