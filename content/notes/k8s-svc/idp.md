@@ -93,4 +93,3 @@ kubectl apply -f authentik-ingress.yaml
 ```
 
 Access authentik by navigating to `https://authentik.aperture.ad/if/flow/initial-setup/`
-Add gitea provider and add gitea application, assign the provider to an application.
