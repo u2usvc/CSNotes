@@ -1,0 +1,2 @@
+{{- $m := findRE `(?m)^# (.+)` .RawContent 1 -}}
+{{- if $m -}}{{ index $m 0 | strings.TrimPrefix "# " }}{{- else -}}{{ .Title }}{{- end -}}

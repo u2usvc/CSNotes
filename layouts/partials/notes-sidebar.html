@@ -1,0 +1,20 @@
+<nav class="sidebar-nav">
+  {{ $notes := site.GetPage "/notes" }}
+  {{ range $notes.Sections.ByTitle }}
+    {{ $section := . }}
+    {{ $isOpen := false }}
+    {{ range .RegularPages }}
+      {{ if eq $.RelPermalink .RelPermalink }}{{ $isOpen = true }}{{ end }}
+    {{ end }}
+    <details{{ if $isOpen }} open{{ end }}>
+      <summary>{{ partial "h1-title.html" $section }}</summary>
+      <ul>
+        {{ range .RegularPages.ByTitle }}
+        <li>
+          <a href="{{ .RelPermalink }}"{{ if eq $.RelPermalink .RelPermalink }} class="active"{{ end }}>{{ partial "h1-title.html" . }}</a>
+        </li>
+        {{ end }}
+      </ul>
+    </details>
+  {{ end }}
+</nav>

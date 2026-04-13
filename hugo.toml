@@ -1,0 +1,8 @@
+baseURL = "/"
+languageCode = "en-us"
+title = "u2usvc"
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+    style = "monokai"
