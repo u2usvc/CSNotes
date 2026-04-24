@@ -421,6 +421,20 @@ reboot
 
 - Make sure to lock UEFI with a strong passphrase and enable DMA protection!
 
+## Misc
+
+### su
+
+#### non-interactive
+
+```bash
+# non-interactive 1
+echo <otherpwd> | su - otheruser -c "my command line"
+
+# non-interactive 2
+expect -c 'spawn su - otheruser -c "my command line"; expect "Password :"; send "<otherpwd>\n"; interact'
+```
+
 ## Package management
 
 ### Patching a package (samba example)
