@@ -180,6 +180,17 @@ curl http://10.99.24.78
 kubectl get pods/$POD_NAME -o yaml | yq .spec.serviceAccountName
 ```
 
+### discover current node podCIDR address
+
+```bash
+# within the container
+cat /proc/net/route
+
+# parse the output externally
+echo "$OUTPUT" | awk '$2=="00000000"{print $3; exit}' | { read H; printf "%d.%d.%d.%d\n" 0x${H:6:2} 0x${H:4:2} 0x${H:2:2} 0x${H:0:2}; }
+# 10.244.2.239
+```
+
 ### find your permissions
 
 ```bash
