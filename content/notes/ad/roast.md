@@ -18,6 +18,12 @@ impacket-GetNPUsers -request -format hashcat -outputfile ASREProastables.txt -ha
 
 1) At least one user on the domain is configured with DONT_REQ_PREAUTH attribute (not default)
 
+## ASREQRoasting
+
+### Execution
+
+[PSCredz](https://github.com/lgandx/pcredz) extracts hashcat 7500 (krb5-key-encrypted blob from AS-REQ PADATA structure with etype 23 (RC4)) from pcap.
+
 ## TGSREPRoasting
 
 ### Execution
