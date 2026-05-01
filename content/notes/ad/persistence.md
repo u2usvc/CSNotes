@@ -23,4 +23,4 @@ python3 ./PKINITtools/gettgtpkinit.py contoso.org/AltAdmLocal -cert-pfx ../pywhi
 
 ### Notes
 
-- 01.2026 Shadow Creds do not work anymore with the January Patch. However the issue related to Microsoft removing the permissions from the computer object to write to the `ms-DS-Key-Credential-Link` attribute. If you grant the computer object the permissions back, then the relaying works as before.
+01.2026 Shadow Creds do not work anymore with the January Patch. However the issue related to Microsoft removing the permissions from the computer object to write to the `ms-DS-Key-Credential-Link` attribute. If you grant the computer object the permissions back, then the relaying works as before.
