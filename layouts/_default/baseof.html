@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="/css/syntax.css">
   <link rel="stylesheet" href="/pagefind/pagefind-ui.css">
 </head>
-<body{{ if eq .Section "notes" }} class="notes-page"{{ end }}>
+<body{{ if or (eq .Section "notes") .IsHome }} class="notes-page"{{ end }}>
   <header>
     <a href="/" class="site-title">
       <svg class="aperture-logo" viewBox="0 0 532 532" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true">
@@ -18,11 +18,11 @@
       {{ site.Title }}
     </a>
     <nav>
-      <a href="/notes"{{ if eq .Section "notes" }} class="active"{{ end }}>
+      <a href="/notes"{{ if or (eq .Section "notes") .IsHome }} class="active"{{ end }}>
         <span>CSNotes</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
       </a>
-      <a href="/posts"{{ if or (eq .Section "posts") .IsHome }} class="active"{{ end }}>
+      <a href="/posts"{{ if eq .Section "posts" }} class="active"{{ end }}>
         <span>Posts</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
       </a>
