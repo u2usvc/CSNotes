@@ -1,5 +1,4 @@
 {{- $m := findRE `(?m)^# (.+)` .RawContent 1 -}}
 {{- $raw := "" -}}
 {{- if $m -}}{{ $raw = index $m 0 | strings.TrimPrefix "# " }}{{- else -}}{{ $raw = .Title }}{{- end -}}
-{{- $escaped := htmlEscape $raw -}}
-{{- replaceRE "`([^`]+)`" "<code>$1</code>" $escaped | safeHTML -}}
+{{- replaceRE "`([^`]+)`" "$1" $raw -}}

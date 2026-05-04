@@ -227,6 +227,20 @@ ul li time {
   white-space: nowrap;
 }
 
+article ul,
+article ol {
+  list-style: revert;
+  padding: revert;
+}
+
+article ul li,
+article ol li {
+  display: list-item;
+  margin: 0.25rem 0;
+  gap: 0;
+  align-items: revert;
+}
+
 article time {
   color: #777;
   font-size: 0.875rem;
@@ -246,12 +260,14 @@ code {
   font-family: monospace;
   font-size: 0.9em;
   background: #1a1a1a;
+  color: #c0392b;
   padding: 0.1em 0.3em;
   border-radius: 2px;
 }
 
 pre code {
   background: none;
+  color: inherit;
   padding: 0;
 }
 
