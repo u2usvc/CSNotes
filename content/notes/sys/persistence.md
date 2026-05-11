@@ -75,3 +75,28 @@ For ubuntu 24.04:
 sudo apt install xfce4
 echo "xfce-session" > ~/.xsession
 ```
+
+### systemd
+
+#### enabled service
+
+```bash
+sudo bash -c 'cat <<EOF > /etc/systemd/system/smth.service
+[Unit]
+Description=Smth
+
+[Service]
+ExecStart=/home/user/utils/smth -V
+Restart=always
+User=root
+WorkingDirectory=/home/user/utils
+
+[Install]
+WantedBy=multi-user.target
+EOF'
+
+sudo systemctl daemon-reload
+sudo systemctl enable smth.service
+sudo systemctl start smth.service
+sudo systemctl status smth.service
+```
