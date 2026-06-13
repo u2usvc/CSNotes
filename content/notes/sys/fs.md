@@ -14,6 +14,12 @@ mkfs.ntfs -Q /dev/sdyX
 mount -t ntfs-3g /dev/device /path/to/mountpoint
 ```
 
+Ensure partitions are of `Microsoft Basic Data` (0700):
+
+```bash
+sudo sgdisk -t 1:0700 -t 2:0700 /dev/sdb
+```
+
 Fix dirty flag:
 
 ```bash
