@@ -1,5 +1,30 @@
 # Wireguard
 
+## AmneziaWG CLI
+
+```bash
+cd utils
+git clone https://github.com/amnezia-vpn/amneziawg-go
+cd amneziawg-go
+make
+
+cd ../
+cd amneziawg-tools/src
+sudo make install
+
+nvim ~/awg0.conf
+
+sudo ln -sf ~/utils/amneziawg-go/amneziawg-go /usr/local/bin/amneziawg-go
+sudo install -m 600 -D ~/awg0.conf /etc/amnezia/amneziawg/awg0.conf
+
+sudo awg-quick up awg0
+
+sudo awg show awg0
+curl -s https://api.ipify.org; echo
+
+sudo awg-quick down awg0
+```
+
 ## WG tunnel to LAN on MT ROS & debian
 
 ```bash
