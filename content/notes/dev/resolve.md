@@ -1,5 +1,46 @@
 # Resolution
 
+## PID
+
+### find PID via `\proc\$PID\comm`
+
+```cpp
+pid_t findProcessId(std::string processName) {
+  DIR* proc = opendir("/proc");
+  if (proc == nullptr) return 0;
+
+  pid_t found = 0;
+  struct dirent* entry;
+  while ((entry = readdir(proc)) != nullptr) {
+    if (entry->d_name[0] < '0' || entry->d_name[0] > '9') continue;
+
+    char commPath[64];
+    snprintf(commPath, sizeof(commPath), "/proc/%s/comm", entry->d_name);
+
+    // cat /proc/self/comm == "cat"
+    FILE* f = fopen(commPath, "r");
+    if (f == nullptr) continue;
+
+    char comm[256] = {0};
+    // read `f` and store the result into `comm`
+    if (fgets(comm, sizeof(comm), f) != nullptr) {
+      size_t len = strlen(comm);
+      if (len > 0 && comm[len - 1] == '\n') comm[len - 1] = '\0';
+
+      if (processName == comm) {
+        found = (pid_t)atoi(entry->d_name);
+        fclose(f);
+        break;
+      }
+    }
+    fclose(f);
+  }
+
+  closedir(proc);
+  return found;
+}
+```
+
 ## Shared lib
 
 ### resolve SO address from link_map
