@@ -1,5 +1,46 @@
 # Resolution
 
+## API
+
+### DInvoke
+
+```csharp
+address = DInvoke.GetLibraryAddress("ntdll.dll",
+    Constants.Methods.NtOpenProcess, hashKey);
+Interop.NtOpenProcess ntOpenProcess =
+  Marshal.GetDelegateForFunctionPointer(address, typeof(Interop.NtOpenProcess)) as Interop.NtOpenProcess;
+Interop.NtStatus status = ntOpenProcess(ref hProcess,
+    Interop.PROCESS_ACCESS_RIGHTS.PROCESS_ALL_ACCESS,
+    ref ObjectAttributes, ref clientid);
+```
+
+### WINAPI hashing
+
+```cpp
+void* resolve_api(void* dllBase, uint64_t apiHash) {
+  IMAGE_DOS_HEADER* DOS_HEADER = (IMAGE_DOS_HEADER*)dllBase;
+  IMAGE_NT_HEADERS* NT_HEADER = (IMAGE_NT_HEADERS*)((LPBYTE)dllBase + DOS_HEADER->e_lfanew);
+  PIMAGE_EXPORT_DIRECTORY EXdir = (PIMAGE_EXPORT_DIRECTORY)((LPBYTE)dllBase + NT_HEADER->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress);
+
+  PDWORD fAddr = (PDWORD)((LPBYTE)dllBase + EXdir->AddressOfFunctions);
+  PDWORD fNames = (PDWORD)((LPBYTE)dllBase + EXdir->AddressOfNames);
+  PWORD  fOrdinals = (PWORD)((LPBYTE)dllBase + EXdir->AddressOfNameOrdinals);
+
+  for (DWORD i = 0; i < EXdir->AddressOfFunctions; i++)
+  {
+    LPSTR pFuncName = (LPSTR)((LPBYTE)dllBase + fNames[i]);
+    DWORD64 calculatedHash = hash(pFuncName);
+
+    if (calculatedHash == apiHash)
+    {
+      LPVOID baseFuncAddr = (LPVOID)((LPBYTE)dllBase + fAddr[fOrdinals[i]]);
+      return baseFuncAddr;
+    }
+  }
+  return 0;
+}
+```
+
 ## PID
 
 ### NtGetNextProcess
@@ -91,6 +132,48 @@ pid_t findProcessId(std::string processName) {
 ```
 
 ## Shared lib
+
+### DLL hashing
+
+```cpp
+void* resolve_lib(uint64_t dllHash) {
+  PNT_TIB pTIB = NULL;
+  PTEB pTEB = NULL;
+  PPEB pPEB = NULL;
+
+  pTIB = (PNT_TIB)__readgsqword(0x30);
+  pTEB = (PTEB)pTIB->Self;
+  pPEB = (PPEB)pTEB->ProcessEnvironmentBlock;
+
+  if (pPEB == NULL) {
+    return NULL;
+  }
+
+  PPEB_LDR_DATA pPEB_LDR_DATA = (PPEB_LDR_DATA)(pPEB->Ldr);
+  PLIST_ENTRY ListHead, ListEntry;
+  PLDR_DATA_TABLE_ENTRY LdrEntry;
+
+  ListHead = &pPEB->Ldr->InLoadOrderModuleList;
+  ListEntry = ListHead->Flink;
+
+  while (ListHead != ListEntry) {
+    LdrEntry = CONTAINING_RECORD(ListEntry, LDR_DATA_TABLE_ENTRY, InLoadOrderLinks);
+
+    UNICODE_STRING BaseDllName = (LdrEntry->FullDllName);
+    HMODULE DllBase = (HMODULE)(LdrEntry->DllBase);
+
+    const char *Dllname = PWSTR_to_Char(BaseDllName.Buffer);
+    DWORD64 retrievedhash = hash(Dllname);
+
+    if (retrievedhash == dllHash) {
+      return DllBase;
+    }
+
+    ListEntry = ListEntry->Flink;
+  }
+  return 0;
+}
+```
 
 ### resolve SO address from link_map
 
