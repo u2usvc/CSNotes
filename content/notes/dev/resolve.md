@@ -2,6 +2,55 @@
 
 ## PID
 
+### NtGetNextProcess
+
+#### Execution
+
+```cpp
+EXTERN_C NTSTATUS sysNtGetNextProcess(
+  HANDLE ProcessHandle,
+  ACCESS_MASK DesiredAccess,
+  ULONG HandleAttributes,
+  ULONG Flags,
+  PHANDLE NewProcessHandle
+);
+
+DWORD findProcessId(std::string processName) {
+  DWORD pid = 0;
+  HANDLE hProcess = NULL;
+  char procName[MAX_PATH];
+
+  while (NT_SUCCESS(call(
+    hashNtDll,
+    hashNtGetNextProcess,
+    sysNtGetNextProcess,
+    hProcess,
+    MAXIMUM_ALLOWED,
+    0,
+    0,
+    &hProcess
+  ))) {
+    memset(procName, 0, MAX_PATH);
+
+    DWORD nameLength = GetProcessImageFileNameA(hProcess, procName, MAX_PATH);
+    if (nameLength == 0) continue;
+
+    LPCSTR fileName = PathFindFileNameA(procName);
+
+    if (lstrcmpiA(fileName, processName.c_str()) == 0) {
+      pid = GetProcessId(hProcess);
+      break;
+    }
+  }
+
+  return pid;
+}
+```
+
+#### Resources
+
+- <https://cocomelonc.github.io/malware/2023/05/26/malware-tricks-30.html>
+
 ### find PID via `\proc\$PID\comm`
 
 ```cpp
