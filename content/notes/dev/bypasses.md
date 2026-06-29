@@ -20,9 +20,3 @@ public static void PatchAmsi()
   VirtualProtect(final, (UInt32)0x1, old, out old);
 }
 ```
-
-## ETW
-
-### usermode ETW patching
-
-- <https://github.com/Mr-Un1k0d3r/AMSI-ETW-Patch/blob/main/patch-etw-x64.c>

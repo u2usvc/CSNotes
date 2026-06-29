@@ -150,6 +150,14 @@ int inject(std::vector<unsigned char> bytecode) {
   }
   close(memFd);
 
+  if ((long long)regs.orig_rax >= 0) {
+    regs.orig_rax = -1;
+    if (ptrace(PTRACE_SETREGS, pid, nullptr, &regs) == -1) {
+      ptrace(PTRACE_DETACH, pid, nullptr, nullptr);
+      return -1;
+    }
+  }
+
   if (ptrace(PTRACE_DETACH, pid, nullptr, nullptr) == -1) {
     return -1;
   }
