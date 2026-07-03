@@ -88,6 +88,10 @@ DWORD findProcessId(std::string processName) {
 }
 ```
 
+#### Resources
+
+- <https://cocomelonc.github.io/malware/2023/05/26/malware-tricks-30.html>
+
 ### find PID via `\proc\$PID\comm`
 
 ```cpp

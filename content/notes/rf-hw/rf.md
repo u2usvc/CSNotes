@@ -1,5 +1,12 @@
 # RF
 
+## ADSB
+
+### General
+
+- <https://www.flightradar24.com/>
+- <https://globe.adsbexchange.com/>
+
 ## Replay
 
 ### HackRF
@@ -11,6 +18,10 @@ sudo hackrf_transfer -s 2000000 -f 315000000 -r unlock.rx
 # transmit file contents with 47 db (maximum) gain
 sudo hackrf_transfer -s 2000000 -f 315000000 -t unlock.rx -x 47
 ```
+
+## Resources
+
+- <https://www.sigidwiki.com/>
 
 ## Spectrum analysis
 
