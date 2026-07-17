@@ -102,7 +102,7 @@ delete: description
 ### ldapsearch
 
 ```bash
-#### PARAMETERS
+### PARAMETERS
 -H ldapuri     # ldap-server uri (required for non-localhost searches)
 -W             # Prompt for simple authentication
 -x             # use simple authentication instead of SASL
@@ -114,19 +114,19 @@ delete: description
 -Y {EXTERNAL,DIGEST-MD5,GSSAPI} # Set the SASL auth mechanism
 -ZZ            # use StartTLS (works for http://)
 
-#### FILTER
+### FILTER
 nc dc someRandomAttribute  # defines attributes to return
 +                          # returns ALL attributes
 '(someAttribute=*)'        # filters by attribute value
 
-#### EXAMPLES
-## anonymous bind (often only `-s base` will be allowed anonymously)
+### EXAMPLES
+# anonymous bind (often only `-s base` will be allowed anonymously)
 ldapsearch -H ldap://10.10.11.241 -x -s base
-## get everything
+# get everything
 ldapsearch -LLL -x -H ldap://192.168.68.64 -D "Administrator@contoso.org" -w 'win2016-cli-P@$swd' -b 'dc=contoso,dc=org'
-## filter by "name" LDAP attribute
+# filter by "name" LDAP attribute
 ldapsearch -LLL -x -H ldap://192.168.68.64 -D "Administrator@contoso.org" -w 'win2016-cli-P@$swd' -b 'dc=contoso,dc=org' 'name=DESKTOP-PD18STT'
-## show only specific attributes
+# show only specific attributes
 ldapsearch -LLL -x -H ldap://192.168.68.64 -D "Administrator@contoso.org" -w 'win2016-cli-P@$swd' -b 'dc=contoso,dc=org' name memberOf
 ```
 
@@ -162,21 +162,21 @@ bloodyAD --host 10.10.11.41 -d certified.htb -u judith.mader -p judith09 set own
 ## pywerview
 
 ```bash
-## search 'administrator' user
+# search 'administrator' user
 pywerview get-netuser -w contoso.org --dc-ip 192.168.68.64 -u TestAcc -p 'win2016-cli-P@$swd' --username administrator
 
-## get users
+# get users
 pywerview get-netuser -w sequel.htb --dc-ip 10.10.11.51 -u rose -p 'KxEPkKe6R8su'
 
-## get 'management' group
+# get 'management' group
 pywerview get-netgroup -w certified.htb --dc-ip 10.10.11.41 -u judith.mader -p judith09 --full-data --groupname 'Management'
 
-## check acls against management group
+# check acls against management group
 pywerview get-objectacl -u judith.mader -p 'judith09' -t 10.10.11.41 --resolve-sids --sam-account-name Management
 
-## get group members
+# get group members
 pywerview get-netgroupmember -w certified.htb --dc-ip 10.10.11.41 -u judith.mader -p judith09 --groupname 'Management'
 
-## get DC
+# get DC
 pywerview get-netdomaincontroller -w certified.htb --dc-ip 10.10.11.41 -u judith.mader -p judith09
 ```
