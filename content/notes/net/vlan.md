@@ -5,7 +5,7 @@
 frame-types:
 
 ```bash
-# only tagged traffic will be send out (set this on trunk ports) 
+# only tagged traffic will be send out (set this on trunk ports (not vlan-facing))
 # (if you send it on bridge it means that only tagged traffic will be send OUT OF THE TRUNK PORT)
 # be carefull setting this because you will not be able to send packets from the router itself out of trunk ports
 frame-types=admit-only-vlan-tagged
