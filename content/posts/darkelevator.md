@@ -1,9 +1,9 @@
 ---
 title: "DarkElevator traces"
 date: 2026-08-01
-description: "Quickstart and sigma for CVE-2026-50343 (DarkElevator) "
+description: "Quickstart and sigma for CVE-2026-50343 (DarkElevator) Windows CrossDevice LPE"
 ---
-
+Posts
 ## Vulnerability description
 
 - Affected: windows 11 (CrossDevice only present on win11)
@@ -12,7 +12,7 @@ description: "Quickstart and sigma for CVE-2026-50343 (DarkElevator) "
 - PoC: <https://github.com/califio/publications/tree/main/MADBugs/windows-CVE-2026-50343>
 
 Exploitation of CVE-2026-50343 (DarkElevator) LPE can be detected by looking for value events under `StaticPluginMap` that have CLSID as a value.
-
+Posts
 InstallService runs as SYSTEM and resolves plugins by reading a pluginID with CLSID value from `StaticPluginMap` key, it then instantiates COM class via `CoCreateInstance` with InprocServer of that CLSID.
 
 We can see here that CrossDevice CLSID InprocServer32 points to a DLL under `%PROGRAMDATA%\CrossDevice\`

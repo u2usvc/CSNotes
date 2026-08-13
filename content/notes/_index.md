@@ -12,11 +12,6 @@ It is currently under development.
 - Expect mistakes here, especially after version changes.
 {{< /disclaimer >}}
 
-{{< disclaimer color="orange" title="Legal disclaimer" >}}
-All content on this resource is provided for educational and authorized research purposes only.
-The author is not responsible for any misuse of the information contained here.
-{{< /disclaimer >}}
-
 ## Why?
 
 Documenting theory is usually error-prone and time-consuming.
