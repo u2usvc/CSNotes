@@ -6,7 +6,7 @@ This is a personal resource with the main topic being information security.
 
 The author's interest is mostly threat detection/prevention/emulation within IT infrastructure.
 
-{{< disclaimer title="Human-written" color="green" >}}
+{{< disclaimer title="Note" color="green" >}}
 I DO NOT use AI to write. All content on this resource was written by me personally.
 {{< /disclaimer >}}
 

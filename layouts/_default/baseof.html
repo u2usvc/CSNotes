@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ if not .IsHome }}{{ partial "h1-title-text.html" . }} - {{ end }}{{ site.Title }}</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  {{ $favicon := partial "logo.html" "#c8c8c8" | printf `<svg viewBox="0 0 532 532" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">%s</svg>` | resources.FromString "favicon.svg" }}
+  <link rel="icon" type="image/svg+xml" href="{{ $favicon.RelPermalink }}">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/syntax.css">
   <link rel="stylesheet" href="/pagefind/pagefind-ui.css">
@@ -12,8 +13,8 @@
 <body{{ if or (eq .Section "notes") .IsHome }} class="notes-page"{{ end }}>
   <header>
     <a href="/" class="site-title">
-      <svg class="aperture-logo" viewBox="0 0 532 532" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true">
-        <g id="a"><g id="b"><path id="c" d="m165 32c-57 24-105 69-131 127l248-46"/><use transform="rotate(45,266,266)" xlink:href="#c"/></g><use transform="rotate(90,266,266)" xlink:href="#b"/></g><use transform="rotate(180,266,266)" xlink:href="#a"/>
+      <svg class="site-logo" viewBox="0 0 532 532" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true">
+        {{ partial "logo.html" "currentColor" }}
       </svg>
       {{ site.Title }}
     </a>
