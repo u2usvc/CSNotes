@@ -1,4 +1,4 @@
-# CSNotes
+# Notes
 
 ## About
 

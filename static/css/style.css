@@ -374,6 +374,89 @@ a {
   color: #6aadde;
 }
 
+/* home page */
+
+body.home-page {
+  min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+body.home-page > main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-card {
+  --mx: 0;
+  --my: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+  padding: 2rem 0;
+  translate: calc(var(--mx) * 10px) calc(var(--my) * 10px);
+  transition: translate 0.35s ease-out;
+}
+
+.home-logo {
+  width: min(18rem, 60vw);
+  height: min(18rem, 60vw);
+  color: #c8c8c8;
+  translate: calc(var(--mx) * 7px) calc(var(--my) * 7px);
+  transition: translate 0.55s ease-out;
+}
+
+.home-title {
+  margin: 0;
+  font-size: 3.5rem;
+}
+
+.home-title::before {
+  content: none;
+}
+
+.home-nav {
+  gap: 2.5rem;
+}
+
+.home-nav a svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.home-nav a span {
+  font-size: 1.25rem;
+}
+
+body.home-page > footer {
+  margin-top: 0;
+  padding: 1.5rem 0;
+  border-top: none;
+  justify-content: center;
+}
+
+body.home-page .contact-links {
+  gap: 1.25rem;
+}
+
+body.home-page .contact-links a svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-card,
+  .home-logo {
+    translate: none;
+    transition: none;
+  }
+}
+
 /* notes section */
 
 body.notes-page {
@@ -492,6 +575,19 @@ body.notes-page > footer {
 
   a.site-title {
     font-size: 1.1rem;
+  }
+
+  .home-nav a span {
+    display: inline;
+    font-size: 1rem;
+  }
+
+  .home-nav {
+    gap: 1.5rem;
+  }
+
+  .home-title {
+    font-size: 2.25rem;
   }
 }
 

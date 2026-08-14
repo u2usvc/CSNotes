@@ -1,13 +1,45 @@
 {{ define "main" }}
-<button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="Toggle sidebar">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-</button>
-<div class="notes-layout">
-  <aside class="notes-sidebar">
-    {{ partial "notes-sidebar.html" . }}
-  </aside>
-  <div class="notes-content">
-    {{ with site.GetPage "/notes" }}{{ .Content }}{{ end }}
-  </div>
+<div class="home-card">
+  <svg class="home-logo" viewBox="0 0 532 532" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true">
+    {{ partial "logo.html" "currentColor" }}
+  </svg>
+  <h1 class="home-title">{{ site.Title }}</h1>
+  <nav class="home-nav">
+    {{ partial "nav-links.html" . }}
+  </nav>
 </div>
+<script>
+  const homeCard = document.querySelector('.home-card');
+  const canTrackPointer = matchMedia('(hover: hover) and (pointer: fine)').matches
+    && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let offsetX = 0;
+  let offsetY = 0;
+  let framePending = false;
+
+  function applyOffset() {
+    framePending = false;
+    homeCard.style.setProperty('--mx', offsetX);
+    homeCard.style.setProperty('--my', offsetY);
+  }
+
+  function queueOffset(x, y) {
+    offsetX = x;
+    offsetY = y;
+    if (framePending) return;
+    framePending = true;
+    requestAnimationFrame(applyOffset);
+  }
+
+  if (canTrackPointer) {
+    addEventListener('pointermove', e => {
+      queueOffset(
+        (e.clientX / innerWidth - 0.5) * 2,
+        (e.clientY / innerHeight - 0.5) * 2
+      );
+    });
+
+    document.addEventListener('mouseleave', () => queueOffset(0, 0));
+  }
+</script>
 {{ end }}
