@@ -408,7 +408,12 @@ body.home-page > main {
   height: min(18rem, 60vw);
   color: #c8c8c8;
   translate: calc(var(--mx) * 7px) calc(var(--my) * 7px);
-  transition: translate 0.55s ease-out;
+  transform: perspective(900px)
+             rotateX(var(--tilt-x, 0deg))
+             rotateY(var(--tilt-y, 0deg));
+  transition: translate 0.55s ease-out,
+              transform var(--snap, 150ms) cubic-bezier(0.2, 0.9, 0.25, 1);
+  will-change: transform;
 }
 
 .home-title {
@@ -454,6 +459,10 @@ body.home-page .contact-links a svg {
   .home-logo {
     translate: none;
     transition: none;
+  }
+
+  .home-logo {
+    transform: none;
   }
 }
 

@@ -4,7 +4,7 @@ title: "About"
 
 This is a personal resource with the main topic being information security.
 
-The author's interest is mostly threat detection/prevention/emulation within IT infrastructure.
+I am mostly interested in threat detection/emulation/mitigation within IT infrastructure.
 
 {{< disclaimer title="Note" color="green" >}}
 I DO NOT use AI to write. All content on this resource was written by me personally.

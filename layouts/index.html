@@ -10,8 +10,110 @@
 </div>
 <script>
   const homeCard = document.querySelector('.home-card');
+  const homeLogo = document.querySelector('.home-logo');
+  const stillnessPreferred = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const canTrackPointer = matchMedia('(hover: hover) and (pointer: fine)').matches
-    && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    && !stillnessPreferred;
+
+  const INTRO_HOLD = 3000;
+  const TURN_MIN = 7000;
+  const TURN_MAX = 14000;
+  const TRACK_SNAP = 580;
+  const MAX_TILT = 38;
+  const MIN_TURN = 30;
+  const MAX_PITCH = 15;
+  const MIN_SWING = 25;
+  const REFOCUS_CHANCE = 0.5;
+  const REFOCUS_MIN = 250;
+  const REFOCUS_MAX = 700;
+  const SHUTTER_CLOSE = 70;
+  const SHUTTER_HOLD = 80;
+  const SHUTTER_OPEN = 130;
+  const SHUTTER_GAP_MIN = 10000;
+  const SHUTTER_GAP_MAX = 15000;
+  const CAMERA_REST = 55;
+  const CAMERA_WIDEST = 44;
+  const CAMERA_FLARE = 34;
+  const CAMERA_TIGHTEST = 66;
+  const CAMERA_SHUTTER = 72;
+  const CAMERA_CENTER = 266;
+  const CAMERA_RADIUS = 255;
+  const CAMERA_PHASE = 25;
+  const CAMERA_SLOT = 12;
+  const SECTOR = Math.PI / 4;
+
+  function between(min, max) {
+    return min + Math.random() * (max - min);
+  }
+
+  function eitherSign() {
+    return Math.random() < 0.5 ? -1 : 1;
+  }
+
+  function clampCamera(value) {
+    return Math.min(CAMERA_TIGHTEST, Math.max(CAMERA_WIDEST, value));
+  }
+
+  const blades = document.querySelectorAll('.logo-blade');
+
+  function edgeHit(m, offset, otherM, otherOffset, keepBeyond) {
+    const reach = Math.sqrt(Math.max(CAMERA_RADIUS * CAMERA_RADIUS - offset * offset, 0));
+    const tangent = [-m[1], m[0]];
+    for (const sign of [1, -1]) {
+      const q = [m[0] * offset + tangent[0] * reach * sign,
+                 m[1] * offset + tangent[1] * reach * sign];
+      const side = q[0] * otherM[0] + q[1] * otherM[1];
+      if (keepBeyond ? side >= otherOffset - 1e-6 : side <= otherOffset + 1e-6) return q;
+    }
+    return null;
+  }
+
+  function wedgePath(alpha) {
+    const psi = (alpha + CAMERA_PHASE - 90) * Math.PI / 180;
+    const m1 = [Math.cos(psi), Math.sin(psi)];
+    const m2 = [Math.cos(psi + SECTOR), Math.sin(psi + SECTOR)];
+    const lead = CAMERA_RADIUS * Math.cos(alpha * Math.PI / 180);
+    const trail = lead - CAMERA_SLOT;
+
+    const det = m1[0] * m2[1] - m1[1] * m2[0];
+    const vx = (lead * m2[1] - m1[1] * trail) / det;
+    const vy = (m1[0] * trail - lead * m2[0]) / det;
+
+    const q1 = edgeHit(m1, lead, m2, trail, false);
+    const q2 = edgeHit(m2, trail, m1, lead, true);
+    if (!q1 || !q2) return null;
+
+    const turn = (Math.atan2(q2[1], q2[0]) - Math.atan2(q1[1], q1[0]) + 2 * Math.PI) % (2 * Math.PI);
+    const at = p => (CAMERA_CENTER + p[0]).toFixed(2) + ',' + (CAMERA_CENTER + p[1]).toFixed(2);
+
+    return 'M' + at(q1) + 'A' + CAMERA_RADIUS + ',' + CAMERA_RADIUS + ' 0 0,'
+      + (turn < Math.PI ? 1 : 0) + ' ' + at(q2) + 'L' + at([vx, vy]) + 'Z';
+  }
+
+  let cameraAngle = CAMERA_REST;
+  let cameraFrame = 0;
+
+  function drawCamera(alpha) {
+    const d = wedgePath(alpha);
+    if (!d) return;
+    cameraAngle = alpha;
+    blades.forEach(blade => blade.setAttribute('d', d));
+  }
+
+  function tweenCamera(target, duration) {
+    const from = cameraAngle;
+    const to = target;
+    const start = performance.now();
+    cancelAnimationFrame(cameraFrame);
+
+    function step(now) {
+      const t = Math.min((now - start) / duration, 1);
+      drawCamera(from + (to - from) * (1 - Math.pow(1 - t, 3)));
+      if (t < 1) cameraFrame = requestAnimationFrame(step);
+    }
+
+    cameraFrame = requestAnimationFrame(step);
+  }
 
   let offsetX = 0;
   let offsetY = 0;
@@ -21,6 +123,7 @@
     framePending = false;
     homeCard.style.setProperty('--mx', offsetX);
     homeCard.style.setProperty('--my', offsetY);
+    if (trackingPointer) applyGaze(gazeTarget(), TRACK_SNAP);
   }
 
   function queueOffset(x, y) {
@@ -31,15 +134,165 @@
     requestAnimationFrame(applyOffset);
   }
 
+  let pointerGaze = null;
+
+  function clampTilt(value) {
+    return Math.min(MAX_TILT, Math.max(-MAX_TILT, value));
+  }
+
+  function clampPitch(value) {
+    return Math.min(MAX_PITCH, Math.max(-MAX_PITCH, value));
+  }
+
+  function swingFrom(gaze) {
+    return Math.hypot(gaze.x - gazeAnchor.x, gaze.y - gazeAnchor.y);
+  }
+
+  function randomGaze() {
+    const reach = between(MIN_TURN, MAX_TILT);
+    const pitch = between(-MAX_PITCH, MAX_PITCH);
+    const sway = Math.sqrt(reach * reach - pitch * pitch);
+
+    const candidate = { x: pitch, y: eitherSign() * sway };
+    if (swingFrom(candidate) >= MIN_SWING) return candidate;
+
+    const away = gazeAnchor.y === 0 ? eitherSign() : -Math.sign(gazeAnchor.y);
+    return { x: pitch, y: away * sway };
+  }
+
+  let gazeTimer;
+  let gazeAnchor = { x: 0, y: 0 };
+  let settleOffset = { x: 0, y: 0 };
+  let trackingPointer = false;
+  let settlesLeft = 0;
+  let turnBudget = 0;
+
+  function gazeTarget() {
+    const base = trackingPointer && pointerGaze ? pointerGaze : gazeAnchor;
+    return {
+      x: clampPitch(base.x + settleOffset.x),
+      y: clampTilt(base.y + settleOffset.y)
+    };
+  }
+
+  function applyGaze(gaze, snap) {
+    homeLogo.style.setProperty('--snap', Math.round(snap) + 'ms');
+    homeLogo.style.setProperty('--tilt-x', gaze.x.toFixed(2) + 'deg');
+    homeLogo.style.setProperty('--tilt-y', gaze.y.toFixed(2) + 'deg');
+  }
+
+  function scheduleSettle() {
+    if (settlesLeft < 1) {
+      gazeTimer = setTimeout(turnHead, turnBudget);
+      return;
+    }
+
+    const gap = turnBudget / (settlesLeft + 1);
+    turnBudget -= gap;
+    gazeTimer = setTimeout(settleHead, gap);
+  }
+
+  function settleHead() {
+    settleOffset = {
+      x: eitherSign() * between(2, 7),
+      y: eitherSign() * between(2, 8)
+    };
+    applyGaze(gazeTarget(), between(100, 185));
+
+    settlesLeft -= 1;
+    scheduleSettle();
+  }
+
+  function turnHead() {
+    const roll = Math.random();
+    trackingPointer = roll >= 0.22 && roll < 0.52 && pointerGaze !== null;
+
+    const ahead = { x: 0, y: 0 };
+    if (roll < 0.22 && swingFrom(ahead) >= MIN_SWING) {
+      gazeAnchor = ahead;
+    } else if (trackingPointer && swingFrom(pointerGaze) >= MIN_SWING) {
+      gazeAnchor = pointerGaze;
+    } else {
+      trackingPointer = false;
+      gazeAnchor = randomGaze();
+    }
+
+    settleOffset = { x: 0, y: 0 };
+    applyGaze(gazeTarget(), between(155, 280));
+    turnBudget = between(TURN_MIN, TURN_MAX);
+    settlesLeft = Math.floor(between(1, 3));
+    scheduleSettle();
+
+    if (Math.random() < REFOCUS_CHANCE) {
+      clearTimeout(apertureTimer);
+      apertureTimer = setTimeout(moveAperture, between(REFOCUS_MIN, REFOCUS_MAX));
+    }
+  }
+
+  let apertureTimer;
+  let recoverTimer;
+
+  function moveAperture() {
+    const roll = Math.random();
+
+    if (roll < 0.32) {
+      const resume = cameraAngle;
+      tweenCamera(CAMERA_SHUTTER, SHUTTER_CLOSE);
+      recoverTimer = setTimeout(() => tweenCamera(resume, SHUTTER_OPEN), SHUTTER_CLOSE + SHUTTER_HOLD);
+      apertureTimer = setTimeout(moveAperture, between(SHUTTER_GAP_MIN, SHUTTER_GAP_MAX));
+      return;
+    }
+
+    if (roll < 0.44) {
+      tweenCamera(CAMERA_FLARE, 230);
+      recoverTimer = setTimeout(() => tweenCamera(clampCamera(between(CAMERA_REST - 4, CAMERA_REST + 8)), 640), 300);
+      apertureTimer = setTimeout(moveAperture, between(14000, 37000));
+      return;
+    }
+
+    const target = roll < 0.72
+      ? clampCamera(cameraAngle + eitherSign() * between(3, 8))
+      : clampCamera(between(CAMERA_WIDEST, CAMERA_TIGHTEST));
+
+    tweenCamera(target, target > cameraAngle ? 250 : 600);
+    apertureTimer = setTimeout(moveAperture, between(12000, 25000));
+  }
+
+  function stopIdleMotion() {
+    clearTimeout(gazeTimer);
+    clearTimeout(apertureTimer);
+    clearTimeout(recoverTimer);
+    cancelAnimationFrame(cameraFrame);
+  }
+
+  function startIdleMotion() {
+    stopIdleMotion();
+    gazeTimer = setTimeout(turnHead, INTRO_HOLD + between(0, 900));
+    apertureTimer = setTimeout(moveAperture, INTRO_HOLD + between(400, 1700));
+  }
+
   if (canTrackPointer) {
     addEventListener('pointermove', e => {
-      queueOffset(
-        (e.clientX / innerWidth - 0.5) * 2,
-        (e.clientY / innerHeight - 0.5) * 2
-      );
+      const nx = e.clientX / innerWidth - 0.5;
+      const ny = e.clientY / innerHeight - 0.5;
+      queueOffset(nx * 2, ny * 2);
+      pointerGaze = {
+        x: clampPitch(-ny * 2 * MAX_PITCH),
+        y: clampTilt(nx * 2 * MAX_TILT)
+      };
     });
 
-    document.addEventListener('mouseleave', () => queueOffset(0, 0));
+    document.addEventListener('mouseleave', () => {
+      queueOffset(0, 0);
+      pointerGaze = null;
+    });
+  }
+
+  if (!stillnessPreferred) {
+    startIdleMotion();
+    document.addEventListener('visibilitychange', () => {
+      document.hidden ? stopIdleMotion() : startIdleMotion();
+    });
   }
 </script>
 {{ end }}
