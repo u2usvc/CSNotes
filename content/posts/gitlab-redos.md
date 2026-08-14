@@ -2,6 +2,7 @@
 title: "GitLab ReDoS"
 date: 2023-08-01
 description: "An authenticated ReDoS in GitLab's markdown reference filter"
+tags: ["web2"]
 ---
 
 ## Disclaimer

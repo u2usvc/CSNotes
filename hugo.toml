@@ -1,6 +1,10 @@
 baseURL = "/"
 languageCode = "en-us"
 title = "u2usvc"
+capitalizeListTitles = false
+
+[params]
+  allowedTags = ["sys", "infra", "web2", "web3", "malware", "devops", "net", "bin", "wireless", "ai", "hardware", "misc"]
 
 [markup]
   [markup.highlight]

@@ -1,0 +1,7 @@
+{{ $current := cond (eq .Kind "term") .Data.Term "" }}
+<nav class="tag-filter">
+  <a href="/posts/" class="tag-all{{ if not $current }} active{{ end }}">all</a>
+  {{ range site.Taxonomies.tags.Alphabetical }}
+  <a href="{{ .Page.RelPermalink }}"{{ if eq .Page.Data.Term $current }} class="active"{{ end }}>#{{ .Page.Data.Term }}<span class="tag-count">{{ .Count }}</span></a>
+  {{ end }}
+</nav>

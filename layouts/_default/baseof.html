@@ -43,6 +43,9 @@
   <dialog id="search-modal">
     <div id="search"></div>
   </dialog>
+  <dialog id="lightbox">
+    <div class="zoom-frame"><img src="" alt=""></div>
+  </dialog>
   <script src="/pagefind/pagefind-ui.js"></script>
   <script>
     const modal = document.getElementById('search-modal');
@@ -65,6 +68,46 @@
         e.preventDefault();
         toggle.click();
       }
+    });
+  </script>
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const zoomFrame = lightbox.querySelector('.zoom-frame');
+    const lightboxImg = lightbox.querySelector('img');
+    let zoomed = false;
+
+    function panTo(e) {
+      const frame = zoomFrame.getBoundingClientRect();
+      const x = (e.clientX - frame.left) / frame.width * 100;
+      const y = (e.clientY - frame.top) / frame.height * 100;
+      lightboxImg.style.transformOrigin = `${x}% ${y}%`;
+    }
+
+    function setZoom(on, e) {
+      zoomed = on;
+      lightbox.classList.toggle('zoomed', on);
+      if (on) panTo(e); else lightboxImg.style.transformOrigin = '';
+    }
+
+    document.querySelector('main').addEventListener('click', e => {
+      if (e.target.tagName !== 'IMG' || e.target.closest('a')) return;
+      lightboxImg.src = e.target.currentSrc || e.target.src;
+      lightboxImg.alt = e.target.alt;
+      lightbox.showModal();
+    });
+
+    lightboxImg.addEventListener('click', e => {
+      e.stopPropagation();
+      setZoom(!zoomed, e);
+    });
+
+    zoomFrame.addEventListener('mousemove', e => { if (zoomed) panTo(e); });
+
+    lightbox.addEventListener('click', () => lightbox.close());
+
+    lightbox.addEventListener('close', () => {
+      setZoom(false);
+      lightboxImg.src = '';
     });
   </script>
   <script>

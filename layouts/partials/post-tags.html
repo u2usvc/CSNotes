@@ -1,0 +1,11 @@
+{{ with .GetTerms "tags" }}
+<ul class="post-tags">
+  {{ range . }}
+  {{ $tag := .Page.Data.Term }}
+  {{ if not (in site.Params.allowedTags $tag) }}
+    {{ errorf "%q: tag %q is not in params.allowedTags" $.File.Path $tag }}
+  {{ end }}
+  <li><a href="{{ .RelPermalink }}">{{ $tag }}</a></li>
+  {{ end }}
+</ul>
+{{ end }}

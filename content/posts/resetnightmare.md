@@ -2,6 +2,7 @@
 title: "ResetNightmare traces"
 date: 2026-08-13
 description: "Detection for CVE-2026-27912 (ResetNightmare) in Kerberos kpasswd password reset mechanism and possibly UPN confusion"
+tags: ["infra"]
 ---
 
 ## Vulnerability description

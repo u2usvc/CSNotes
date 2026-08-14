@@ -2,6 +2,7 @@
 title: "DarkElevator traces"
 date: 2026-08-01
 description: "Quickstart and sigma for CVE-2026-50343 (DarkElevator) Windows CrossDevice LPE"
+tags: ["sys"]
 ---
 Posts
 ## Vulnerability description

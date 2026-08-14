@@ -2,6 +2,7 @@
 title: "NFS with LDAP and Kerberos Authentication"
 date: 2023-09-01
 description: "A guide for the deployment of OpenLDAP w/ KRB5 KDC to provide authentication for NFS"
+tags: ["infra"]
 ---
 
 ## About
