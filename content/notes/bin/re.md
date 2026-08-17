@@ -2,6 +2,16 @@
 
 ## Utils
 
+### GoReSym
+
+Make sure to use CMD, so that `>` would produce UTF-8
+
+```powershell
+cmd /c ".\GoReSym.exe -t -d -p $BIN > $PATH\out.json"
+```
+
+Load: <https://github.com/mandiant/GoReSym/blob/master/IDAPython/goresym_rename.py>
+
 ### windbg
 
 #### Usage
